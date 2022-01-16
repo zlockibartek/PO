@@ -1,6 +1,11 @@
 <?php
 
 namespace src;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/DBManager.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/Tables/Product.php');
+
+use src\DBManager\EntityManager;
+use src\DBManager\Tables\Product;
 
 class Controller
 {
@@ -14,6 +19,11 @@ class Controller
 	public function __construct()
 	{
 		$this->addRoles();
+		// $this->DBManager = new EntityManager();
+		// $product = new Product();
+		// $product->setIdCountry(1);
+		// $this->DBManager->entityManager->persist($product);
+		// $this->DBManager->entityManager->flush();
 		// $this->registerShortcodes();
 		// $this->registerAdminPages();
 	}

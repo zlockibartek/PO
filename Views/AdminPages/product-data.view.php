@@ -1,41 +1,42 @@
 <head>
+	<script src="https://use.fontawesome.com/c560c025cf.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<form class="needs-validation" novalidate>
+<form class="needs-validation" method="POST">
 	<h3>Dodaj produkt</h3>
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="validationTooltip03">Nazwa produktu</label>
-			<input type="password" class="form-control" id="validationTooltip03" placeholder="Wprowadź nazwę produktu" required>
+			<input type="text" class="form-control" id="validationTooltip03" placeholder="Wprowadź nazwę produktu" value="<?= $product->getTitle() ?>" required>
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="exampleFormControlTextarea1" class="form-label">Opis produktu</label>
-			<textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Wprowadź opis produktu" rows="3"></textarea>
+			<textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Wprowadź opis produktu" value="<?= $product->getDescription() ?>" rows="3"></textarea>
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productQuantity" class="form-label">Ilość sztuk w magazynie</label>
-			<input type="number" class="form-control" id="productQuantity" placeholder="Wprowadź liczbę sztuk">
+			<input type="number" class="form-control" id="productQuantity" min="0" value="<?= $product->getQuantity() ?>" placeholder="Wprowadź liczbę sztuk">
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productPrice" class="form-label">Cena</label>
-			<input type="number" class="form-control" id="productPrice" placeholder="Wprowadź cenę produktu">
+			<input type="number" class="form-control" id="productPrice" min="0" step="0.01" value="<?= $product->getPrice() ?>" placeholder="Wprowadź cenę produktu">
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productDiscount" class="form-label">Rabat</label>
-			<input type="number" class="form-control" id="productDiscount" placeholder="Wprowadź rabat" value="0">
+			<input type="number" class="form-control" id="productDiscount" min="0" max="100" value="<?= $product->getDiscount() ?>" placeholder="Wprowadź rabat" value="0">
 		</div>
 	</div>
 
@@ -43,10 +44,9 @@
 		<div class="col-md-6 md-3">
 			<label for="selectWeight">Waga produktu</label>
 			<select class="form-control" id="selectWeight">
-				<option selected>Wybierz wagę</option>
-				<option value="1">50</option>
-				<option value="2">100</option>
-				<option value="3">150</option>
+				<?php foreach ($weight as $type) : ?>
+					<option <?= $product->getWeight() == $type ? 'selected' : '' ?> value="<?= $type ?>"><?= $type ?></option>
+				<?php endforeach ?>
 			</select>
 		</div>
 	</div>
@@ -57,13 +57,15 @@
 			<input class="form-control" type="file" id="formFile">
 		</div>
 	</div>
+
 	<br>
+
 	<div class="form-row">
 		<div id="switch" class="btn-group" role="group" aria-label="Basic radio toggle button group">
-			<input type="radio" class="btn-check" name="btnradio" id="coffeeButton" autocomplete="off" checked>
+			<input type="radio" class="btn-check" <?= $type == 'tea' ? 'disabled' : '' ?> name="btnradio" id="coffeeButton" autocomplete="off" checked>
 			<label class="btn btn-outline-primary" for="coffeeButton">Kawa</label>
 
-			<input type="radio" class="btn-check" name="btnradio" id="teaButton" autocomplete="off">
+			<input type="radio" class="btn-check" <?= $type == 'tea' ? 'disabled' : '' ?> name="btnradio" id="teaButton" autocomplete="off">
 			<label class="btn btn-outline-primary" for="teaButton">Herbata</label>
 
 		</div>
@@ -75,37 +77,35 @@
 			<div class="col-md-6 md-3">
 				<label for="selectTea">Typ herbaty</label>
 				<select class="form-control" id="selectTea">
-					<option selected>Wybierz typ</option>
-					<option value="1">Roibos</option>
-					<option value="2">Czarna</option>
-					<option value="3">Pu-erh</option>
+					<?php foreach ($teaTypes as $type) : ?>
+						<option <?= $product->getType() == $type ? 'selected' : '' ?> value="<?= $type ?>"><?= $type ?></option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
-				<label for="brewQuantity" class="form-label">Liczba parzenia</label>
-				<input type="number" class="form-control" id="brewQuantity" placeholder="Wprowadź liczbę zaparzeń">
+				<label for="brewQuantity" class="form-label">Liczba zaparzeń</label>
+				<input type="number" class="form-control" id="brewQuantity" min="1" value="<?= $product->getBrewQuantity() ?>" placeholder="Wprowadź liczbę zaparzeń">
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
 				<label for="brewTime" class="form-label">Czas parzenia</label>
-				<input type="number" class="form-control" id="brewTime" placeholder="Wprowadź czas parzenia">
+				<input type="number" value="<?= $product->getBrewTime() ?>" class="form-control" min="0" id="brewTime" placeholder="Wprowadź czas parzenia">
 			</div>
 
 		</div>
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
-				<label for="selectTeaCountry">Typ herbaty</label>
+				<label for="selectTeaCountry">Kraj pochodzenia</label>
 				<select class="form-control" id="selectTeaCountry">
-					<option selected>Wybierz kraj</option>
-					<option value="1">Chiny</option>
-					<option value="2">Japonia</option>
-					<option value="3">Sri Lanka</option>
+					<?php foreach ($countriesTea as $country) : ?>
+						<option <?= $product->getCountry() == $country->getId() ? 'selected' : '' ?> value="<?= $country->getId() ?>"><?= $country->getName() ?></option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>
@@ -118,9 +118,9 @@
 			<div class="col-md-6 md-3">
 				<label for="selectCoffee">Typ kawy</label>
 				<select class="form-control" id="selectCoffee">
-					<option selected>Wybierz typ</option>
-					<option value="1">Klasyczna</option>
-					<option value="2">aromatyzowana</option>
+					<?php foreach ($coffeeTypes as $type) : ?>
+						<option <?= $product->getType() == $type ? 'selected' : '' ?> value="<?= $type ?>"><?= $type ?></option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>
@@ -129,9 +129,9 @@
 			<div class="col-md-6 md-3">
 				<label for="selectGrind">Rodzaj zmielenia</label>
 				<select class="form-control" id="selectGrind">
-					<option selected>Wybierz rodzaj</option>
-					<option value="1">Drobno</option>
-					<option value="2">Średnio</option>
+					<?php foreach ($grind as $type) : ?>
+						<option <?= $product->getGrind() == $type ? 'selected' : '' ?> value="<?= $type ?>"><?= $type ?></option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>
@@ -139,14 +139,14 @@
 		<div class="form-row">
 			<div class="col-md-6 md-3">
 				<label for="brewQuantity" class="form-label">Data palenia</label>
-				<input type="date" class="form-control" id="brewQuantity" placeholder="Wprowadź liczbę zaparzeń">
+				<input type="date" value="<?= $product->getSmokeDate() ?>" class="form-control" id="brewQuantity" placeholder="Wprowadź liczbę zaparzeń">
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
 				<label for="brewTemp" class="form-label">Temperatura parzenia</label>
-				<input type="number" class="form-control" id="brewTemp" placeholder="Wprowadź temperaturę parzenia">
+				<input type="number" min="0" max="100" value="<?= $product->getTemperature() ?>" class="form-control" id="brewTemp" placeholder="Wprowadź temperaturę parzenia">
 			</div>
 
 		</div>
@@ -155,10 +155,9 @@
 			<div class="col-md-6 md-3">
 				<label for="selectCoffeeCountry">Kraj pochodzenia</label>
 				<select class="form-control" id="selectCoffeeCountry">
-					<option selected>Wybierz kraj</option>
-					<option value="1">Chiny</option>
-					<option value="2">Japonia</option>
-					<option value="3">Sri Lanka</option>
+					<?php foreach ($countriesCoffee as $country) : ?>
+						<option value="<?= $country->getId() ?>"><?= $country->getName() ?></option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>
@@ -167,7 +166,7 @@
 
 	<br>
 
-	<button class="btn btn-primary" type="submit">Aktualizuj dane</button>
-	
+	<input class="btn btn-primary" type="submit" value="Aktualizuj dane"></input>
+
 	<a href="<?= $backButton ?>"><button type="button" class="btn btn-primary">Powrót</button></a><br><br>
 </form>

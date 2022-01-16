@@ -1,9 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/EntityManager.php');
+require_once('C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\DBManager\DBManager.php');
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use src\DBManager\EntityManager;
+use src\DBManager\DBManager;
 
-$entityManager = new EntityManager();
+$DBManager = new DBManager();
 
-return ConsoleRunner::createHelperSet($entityManager);
+return ConsoleRunner::createHelperSet($DBManager->entityManager);

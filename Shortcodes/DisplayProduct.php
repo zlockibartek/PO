@@ -18,7 +18,11 @@ class DisplayProduct extends Controller
 		$results = $wpdb->get_results($sql);
 		
 		$this->enqueueStyle('product-list');
-
+		$this->enqueueStyle('cart');
+		$this->enqueueStyle('Products');
+		$this->enqueueStyle('Shopping');
+		$this->enqueueStyle('Header');
+		wp_enqueue_script('font', 'https://use.fontawesome.com/c560c025cf.js');
 		$this->enqueueScript('root');
 		$this->enqueueScript('catalog');
 		$this->enqueueScript('localStorageUtil');
