@@ -13,8 +13,8 @@ class Product
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
+	 * @ORM\OneToMany(targetEntity="OrderPoistion", mappedBy="productId")
 	 * @ORM\GeneratedValue
-	 * 
 	 */
 	private $id;
 	/**

@@ -7,7 +7,7 @@ class Header {
         const html = `
            <div class="header-container">
                 <div class="header-counter" onclick="shoppingPage.appearCart();"">
-                    🔥 ${count}
+                 Koszyk
                 </div>
            </div>
         `;

@@ -23,7 +23,7 @@ class Products extends Controller
 	{
 		$DBManager = new DBManager();
 		$em = $DBManager->entityManager;
-
+		
 		if ($_POST && !isset($_GET['edit'])) {
 			$this->addToDB(null, $em);
 			return;
@@ -113,8 +113,15 @@ class Products extends Controller
 		if (isset($_POST['discount'])) {
 			$product->setDiscount($_POST['discount']);
 		}
-		if (isset($_POST['image'])) {
-			$product->setPath($_POST['image']);
+		if ($_FILES) {
+			$image = $_FILES['image'];
+			$imageName = $image['name'];
+			$imageTemp = $image['tmp_name'];
+			$path = 'wp-content\plugins\po\assets\img\\';
+			if(is_uploaded_file($imageTemp)) {
+				move_uploaded_file($imageTemp, $path . $imageName);
+				$product->setPath($path . $imageName);
+			}
 		}
 		$product->setType($_POST['switch']);
 		if ($_POST['switch'] == 'tea') {

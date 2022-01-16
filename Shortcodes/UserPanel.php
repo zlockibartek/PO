@@ -2,12 +2,19 @@
 
 namespace src\Shortcodes;
 
-class UserPanel
+use src\Controller;
+
+class UserPanel extends Controller
 {
 	public $tag = 'userPanel';
 	public function handler()
 	{
 		$action = isset($_GET['action']) ? $_GET['action'] : '';
+		$this->enqueueScript('root');
+		$this->enqueueScript('localStorageUtil');
+		$this->enqueueScript('Header');
+		$this->enqueueScript('navbar', null, ['user' => get_current_user_id()], 'NAVBAR');
+		$this->enqueueStyle('Header');
 		$backButton = get_permalink();
 		switch ($action) {
 			case 'address':
@@ -32,7 +39,7 @@ class UserPanel
 				break;
 			default:
 				ob_flush();
-				include $_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/Views/AdminPages/user-panel.view.php';
+				include $_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/Views/Shortcodes/user-panel.view.php';
 				$html = ob_get_clean();
 				break;
 		}

@@ -3,7 +3,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<form class="products" action="<?= $id == 0 ? $backButton : '' ?>" method="POST">
+<form class="products" action="<?= $id == 0 ? $backButton : '' ?>" method="POST" enctype="multipart/form-data">
 	<h3>Dodaj produkt</h3>
 	<div class="form-row">
 		<div class="col-md-6 md-3">
@@ -54,7 +54,7 @@
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="formFile" class="form-label">Dodaj zdjęcie</label>
-			<input class="form-control" name="image" type="file" id="formFile">
+			<input class="form-control" name="image"  type="file" id="formFile" accept="image/png">
 		</div>
 	</div>
 

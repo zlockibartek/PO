@@ -19,15 +19,8 @@ class Controller
 	public function __construct()
 	{
 		$this->addRoles();
-		// $this->DBManager = new EntityManager();
-		// $product = new Product();
-		// $product->setIdCountry(1);
-		// $this->DBManager->entityManager->persist($product);
-		// $this->DBManager->entityManager->flush();
-		// $this->registerShortcodes();
-		// $this->registerAdminPages();
 	}
-
+	
 	public function registerShortcodes()
 	{
 		$shortcodePath = self::PATH . '\Shortcodes';
@@ -41,7 +34,7 @@ class Controller
 			}
 		}
 	}
-
+	
 	public function registerAdminPages()
 	{
 		$adminPagesPath = self::PATH . '\AdminPages';
@@ -55,7 +48,7 @@ class Controller
 			}
 		}
 	}
-
+	
 	public function renderHTML($path, $variables = [])
 	{
 		extract($variables);

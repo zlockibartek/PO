@@ -3,6 +3,7 @@
 namespace src\Shortcodes;
 
 use src\Controller;
+use src\DBManager\DBManager;
 
 class DisplayProduct extends Controller
 {
@@ -11,12 +12,18 @@ class DisplayProduct extends Controller
 
 	function handler($atts)
 	{
-		global $wpdb;
-		$name = $atts['name'];
-		$table  = $wpdb->prefix . $name;
-		$sql = "SELECT * FROM $table;";
-		$results = $wpdb->get_results($sql);
-		
+		$DBManager = new DBManager();
+		$em = $DBManager->entityManager;
+		$products = $em->getRepository('src\DBManager\Tables\Product')->findAll();
+		$results = [];
+		foreach ($products as $product) {
+			$results[] = array(
+				'id' => $product->getId(),
+				'img' => $product->getPath(),
+				'price' => $product->getPrice(),
+				'name' => $product->getTitle(),
+			);
+		}
 		$this->enqueueStyle('product-list');
 		$this->enqueueStyle('cart');
 		$this->enqueueStyle('Products');
@@ -26,11 +33,12 @@ class DisplayProduct extends Controller
 		$this->enqueueScript('root');
 		$this->enqueueScript('catalog');
 		$this->enqueueScript('localStorageUtil');
-		$this->enqueueScript('Products', null, ['Products' => array('id' => 1)], 'PRODUCTS');
-		$this->enqueueScript('Header');
+		$this->enqueueScript('navbar', null, ['user' => get_current_user_id()], 'NAVBAR');
+		$this->enqueueScript('Products', null, ['Products' => $results], 'PRODUCTS');
 		$this->enqueueScript('Shopping');
+		$this->enqueueScript('Header');
 
-		$this->renderHTML('Shortcodes/product-list', ['results' => $results]);
+		$this->renderHTML('Shortcodes/product-list');
 	}
 
 }

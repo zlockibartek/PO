@@ -23,14 +23,14 @@ class Products {
         const productsStore = localStorageUtil.getProducts();
         let htmlCatalog = '';
 
-        CATALOG.forEach(({ id, name, price, img }) => {
+        PRODUCTS.Products.forEach(({ id, name, price, img }) => {
             let activeClass = '';
             let activeText = '';
 
             if (productsStore.indexOf(id) === -1) {
                 activeText = this.labelAdd;
             } else {
-                activeClass = ' '+this.classNameActive;
+                activeClass = ' ' + this.classNameActive;
                 activeText = this.labelRemove;
             }
 
@@ -39,7 +39,7 @@ class Products {
                     <span class="products-element__name">${name}</span>
                     <img class="products-element__img" src="${img}" />
                     <span class="products-element__price">
-                        ⚡️ ${price.toLocaleString()} zł
+                         ${price.toLocaleString()} zł
                     </span>
                     <button class="products-element__btn${activeClass}" onclick="productsPage.handleSetLocationStorage(this, '${id}');">
                         ${activeText}
