@@ -11,3 +11,8 @@ tea.addEventListener('click', function() {
     teaDiv.hidden = false
     coffeeDiv.hidden = true
 })
+
+if (coffee.disabled == true) {
+    teaDiv.hidden = false
+    coffeeDiv.hidden = true
+}

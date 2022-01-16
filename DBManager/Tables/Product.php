@@ -26,11 +26,11 @@ class Product
 	 */
 	private $weight;
 	/**
-	 * @ORM\Column(type="float")
+	 * @ORM\Column(type="float", nullable="true")
 	 */
 	private $temperature;
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable="true")
 	 */
 	private $discount;
 	/**
@@ -50,7 +50,11 @@ class Product
 	 */
 	private $title;
 	/**
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="string")
+	 */
+	private $kind;
+	/**
+	 * @ORM\Column(type="integer", nullable="true")
 	 */
 	private $brewQuantity;
 	/**
@@ -62,7 +66,7 @@ class Product
 	 */
 	private $smokeDate;
 	/**
-	 * @ORM\Column(type="date", nullable="true")
+	 * @ORM\Column(type="integer", nullable="true")
 	 */
 	private $brewTime;
 	/**
@@ -327,6 +331,24 @@ class Product
 	public function setTemperature($temperature): self
 	{
 		$this->temperature = $temperature;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of kind
+	 */
+	public function getKind()
+	{
+		return $this->kind;
+	}
+
+	/**
+	 * Set the value of kind
+	 */
+	public function setKind($kind): self
+	{
+		$this->kind = $kind;
 
 		return $this;
 	}

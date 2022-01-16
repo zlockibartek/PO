@@ -10,7 +10,7 @@
       <th scope="col">Typ</th>
       <th scope="col">Waga</th>
       <th scope="col">Ilość</th>
-      <th scope="col">Cena jednostkowa</th>
+      <th scope="col">Cena jednostkowa [zł]</th>
       <th scope="col">Akcje</th>
     </tr>
   </thead>
@@ -18,7 +18,7 @@
     <?php foreach ($products as $product): ?>
   <tr>
       <td><?= $product->getTitle() ?></td>
-      <td><?= $product->getType() ?></td>
+      <td><?= $product->getKind() ?></td>
       <td><?= $product->getWeight() ?></td>
       <td><?= $product->getQuantity() ?></td>
       <td><?= $product->getPrice() ?></td>
