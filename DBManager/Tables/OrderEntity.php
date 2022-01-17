@@ -6,22 +6,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="Order")
+ * @ORM\Table(name="OrderEntity")
  */
-class Order
+class OrderEntity
 {
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
-	 * @ORM\OneToMany(targetEntity="OrderPoistion", mappedBy="orderId")
+	 * @ORM\OneToMany(targetEntity="OrderPosition", mappedBy="orderId")
 	 * @ORM\GeneratedValue
 	 */
 	private $id;
-
-	/**
-	 *@ORM\Column(type="integer")
-	 */
-	private $statusId;
 
 	/**
 	 * @ORM\Column(type="integer")
@@ -30,7 +25,19 @@ class Order
 	/**
 	 * @ORM\Column(type="string")
 	 */
+	private $paymentStatus;
+	/**
+	 * @ORM\Column(type="string")
+	 */
+	private $deliveryStatus;
+	/**
+	 * @ORM\Column(type="string")
+	 */
 	private $paymentMethod;
+	/**
+	 * @ORM\Column(type="date")
+	 */
+	private $paymentDate;
 	/**
 	 * @ORM\OneToOne(targetEntity="Note", mappedBy="id", cascade={"remove"})
 	 * @ORM\Column(type="integer")
@@ -39,12 +46,12 @@ class Order
 	/**
 	 * @ORM\Column(type="integer")
 	 */
-	private $userId;
+	private $clientId;
 	/**
 	 * @ORM\Column(type="integer")
 	 */
 	private $delivererId;
-/**
+	/**
 	 * @ORM\Column(type="integer")
 	 */
 	private $addressId;
@@ -55,26 +62,6 @@ class Order
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	
-
-	/**
-	 * Get the value of statusId
-	 */
-	public function getStatusId()
-	{
-		return $this->statusId;
-	}
-
-	/**
-	 * Set the value of statusId
-	 */
-	public function setStatusId($statusId): self
-	{
-		$this->statusId = $statusId;
-
-		return $this;
 	}
 
 	/**
@@ -181,6 +168,78 @@ class Order
 	public function setAddressId($addressId): self
 	{
 		$this->addressId = $addressId;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of clientId
+	 */
+	public function getClientId()
+	{
+		return $this->clientId;
+	}
+
+	/**
+	 * Set the value of clientId
+	 */
+	public function setClientId($clientId): self
+	{
+		$this->clientId = $clientId;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of paymentStatus
+	 */
+	public function getPaymentStatus()
+	{
+		return $this->paymentStatus;
+	}
+
+	/**
+	 * Set the value of paymentStatus
+	 */
+	public function setPaymentStatus($paymentStatus): self
+	{
+		$this->paymentStatus = $paymentStatus;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of deliveryStatus
+	 */
+	public function getDeliveryStatus()
+	{
+		return $this->deliveryStatus;
+	}
+
+	/**
+	 * Set the value of deliveryStatus
+	 */
+	public function setDeliveryStatus($deliveryStatus): self
+	{
+		$this->deliveryStatus = $deliveryStatus;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of paymentDate
+	 */
+	public function getPaymentDate()
+	{
+		return $this->paymentDate;
+	}
+
+	/**
+	 * Set the value of paymentDate
+	 */
+	public function setPaymentDate($paymentDate): self
+	{
+		$this->paymentDate = $paymentDate;
 
 		return $this;
 	}

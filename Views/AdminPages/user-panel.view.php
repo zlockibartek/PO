@@ -35,7 +35,7 @@
     </div>
     <br>
 </div>
-<p>Imię: Bartłomiej</p>
-<p>Nazwisko: Złocki</p> 
-<p>Adres rozliczeniowy: brak</p>
-<p>Adres wysyłki: ul. Wyspiańskiego 1, 30-376, Wrocław</p>
+<p>Imię: <?= $content['name'] ?></p>
+<p>Nazwisko: <?= $content['surname'] ?></p> 
+<p>Adres rozliczeniowy: <?= $content['deliveryAddress']->getTown() . ', ' . $content['deliveryAddress']->getPostalCode() . ', ' . $content['deliveryAddress']->getStreet() . ' ' . $content['deliveryAddress']->getBuilding() . '/' . $content['deliveryAddress']->getApartament() ?></p>
+<p>Adres wysyłki: <?= $content['paymentAddress']->getTown() . ', ' . $content['paymentAddress']->getPostalCode() . ', ' . $content['paymentAddress']->getStreet() . ' ' . $content['paymentAddress']->getBuilding() . '/' . $content['paymentAddress']->getApartament() ?></p>
