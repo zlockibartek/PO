@@ -7,27 +7,18 @@
 		<div class="col-md-6 md-3">
 			<label for="validationTooltip03">Obecne hasło</label>
 			<input type="password" class="form-control" name="current" id="validationTooltip03" placeholder="Wprowadź obecne hasło" required>
-			<div class="invalid-tooltip">
-				Please provide a valid city.
-			</div>
 		</div>
 	</div>
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="validationTooltip03">Nowe hasło</label>
 			<input type="password" class="form-control" name="new" id="validationTooltip03" placeholder="Wprowadź nowe hasło" required>
-			<div class="invalid-tooltip">
-				Please provide a valid city.
-			</div>
 		</div>
 	</div>
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="validationTooltip03">Powtórz hasło</label>
 			<input type="password" class="form-control" name="repeat" id="validationTooltip03" placeholder="Powtórz nowe hasło" required>
-			<div class="invalid-tooltip">
-				Please provide a valid city.
-			</div>
 		</div>
 	</div>
 

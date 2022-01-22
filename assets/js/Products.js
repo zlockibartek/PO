@@ -1,8 +1,8 @@
 class Products {
     constructor() {
-        this.classNameActive = 'products-element__btn_active';
-        this.labelAdd = 'Dodać do koszyka';
-        this.labelRemove = 'Usuń z koszyka';
+        this.classNameActive = "products-element__btn_active";
+        this.labelAdd = "Dodać do koszyka";
+        this.labelRemove = "Usuń z koszyka";
     }
 
     handleSetLocationStorage(element, id) {
@@ -21,21 +21,20 @@ class Products {
 
     render() {
         const productsStore = localStorageUtil.getProducts();
-        let htmlCatalog = '';
+        let htmlCatalog = "";
 
         PRODUCTS.Products.forEach(({ id, name, price, img }) => {
-            let activeClass = '';
-            let activeText = '';
-
+            let activeClass = "";
+            let activeText = "";
             if (productsStore.indexOf(id) === -1) {
                 activeText = this.labelAdd;
             } else {
-                activeClass = ' ' + this.classNameActive;
+                activeClass = " " + this.classNameActive;
                 activeText = this.labelRemove;
             }
 
             htmlCatalog += `
-                <li class="products-element">
+                <li class="products-element" data-id="${id  }">
                     <span class="products-element__name">${name}</span>
                     <img class="products-element__img" src="${img}" />
                     <span class="products-element__price">
@@ -53,8 +52,18 @@ class Products {
                 ${htmlCatalog}
             </ul>
         `;
-
         ROOT_PRODUCTS.innerHTML = html;
+        let products = document.querySelectorAll('.products-element')
+        products.forEach(element => {
+            // if (productsStore.includes(element.dataset.id.toString())) {
+            //     element.classList.add(this.classNameActive);
+            //     element.innerHTML = this.labelRemove;
+            // } else {
+            //     element.classList.remove(this.classNameActive);
+            //     element.innerHTML = this.labelAdd;
+            // }
+            console.log(element)
+        })
     }
 }
 

@@ -16,12 +16,6 @@ class UserPanel extends Controller
 
 		$action = isset($_GET['action']) ? $_GET['action'] : '';
 
-		$this->enqueueScript('root');
-		$this->enqueueScript('localStorageUtil');
-		$this->enqueueScript('Header');
-		$this->enqueueScript('navbar', null, ['user' => get_current_user_id(), 'url' => 'http://multi.localhost/zamowienie/'], 'NAVBAR');
-		$this->enqueueStyle('Header');
-
 		switch ($action) {
 			case 'address':
 				$content = $this->personalData($em);

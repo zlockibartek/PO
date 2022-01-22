@@ -17,4 +17,4 @@ require_once('vendor/autoload.php');
 $controller = new Controller();
 $controller->registerShortcodes();
 $controller->registerAdminPages();
-// $EM = new \src\Shortcodes\DisplayProduct();
+$controller->registerHooks();

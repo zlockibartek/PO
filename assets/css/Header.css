@@ -7,7 +7,7 @@
 
 .header-counter {
     margin-left: auto;
-    padding-right: 30px;
+    /* padding-right: 30px; */
     font-weight: bold;
     cursor: pointer;
 }

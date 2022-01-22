@@ -29,7 +29,7 @@
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productPrice" class="form-label">Cena</label>
-			<input type="number" class="form-control" id="productPrice" min="0" step="0.01" name="price" value="<?= $product->getPrice() ?>" placeholder="Wprowadź cenę produktu">
+			<input type="number" class="form-control" id="productPrice" min="0" step="0.01" name="price" value="<?= $product->getPrice() ?>" placeholder="Wprowadź cenę produktu" required>
 		</div>
 	</div>
 

@@ -34,6 +34,20 @@ class Controller
 			}
 		}
 	}
+
+	public function registerHooks()
+	{
+		$hookPath = self::PATH . '\Hooks';
+		$hooks = scandir($hookPath);
+		foreach ($hooks as $hook) {
+			if (strpos($hook, '.php')) {
+				$classNamespace = self::NAMESPACE . 'Hooks\\' . str_replace('.php', '', $hook);
+				require_once($hookPath . '\\' . $hook);
+				$class = new $classNamespace();	
+				add_action($class->tag, array($class, 'handler'));
+			}
+		}
+	}
 	
 	public function registerAdminPages()
 	{
@@ -63,7 +77,7 @@ class Controller
 	}
 
 	public function enqueueScript($name, $path = null, $data = null, $dataName = null) {
-		\wp_enqueue_script($name, plugins_url('', __FILE__) . '/assets/js/' . $name .'.js');
+		\wp_enqueue_script($name, plugins_url('', __FILE__) . '/assets/js/' . $name .'.js', [], false, true);
 		if ($data) {	
 			\wp_add_inline_script($name, 'const ' . $dataName . ' = ' . json_encode($data), 'before');	
 		}
@@ -71,7 +85,8 @@ class Controller
 
 	private function addRoles() {
 		add_role('employee', 'Pracownik', array());	
-		add_role('manager', 'Kierownik', array());	
+		add_role('manager', 'Administrator', array());	
+		add_role('client', 'Klient', array());	
 		
 	}
 }

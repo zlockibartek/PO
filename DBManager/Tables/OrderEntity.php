@@ -119,24 +119,6 @@ class OrderEntity
 	}
 
 	/**
-	 * Get the value of userId
-	 */
-	public function getUserId()
-	{
-		return $this->userId;
-	}
-
-	/**
-	 * Set the value of userId
-	 */
-	public function setUserId($userId): self
-	{
-		$this->userId = $userId;
-
-		return $this;
-	}
-
-	/**
 	 * Get the value of delivererId
 	 */
 	public function getDelivererId()

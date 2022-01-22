@@ -4,6 +4,7 @@ class Header {
     }
 
     render(count) {
+
         const html = `
            <div class="header-container">
                 <div class="header-counter" onclick="shoppingPage.appearCart();"">

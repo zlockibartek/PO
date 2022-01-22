@@ -118,8 +118,9 @@ class Products extends Controller
 			$imageName = $image['name'];
 			$imageTemp = $image['tmp_name'];
 			$path = 'wp-content\plugins\po\assets\img\\';
+			$absolutePath = 'C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\assets\img\\';
 			if(is_uploaded_file($imageTemp)) {
-				move_uploaded_file($imageTemp, $path . $imageName);
+				move_uploaded_file($imageTemp, $absolutePath . $imageName);
 				$product->setPath($path . $imageName);
 			}
 		}
