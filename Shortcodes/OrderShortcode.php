@@ -35,9 +35,26 @@ class OrderShortcode extends Controller
 		if ($_POST) {
 			$this->saveToDB();
 		}
+
+		$userId = get_current_user_id();
+		$user = array(
+			'name' => get_user_meta($userId, 'first_name', true),
+			'surname' => get_user_meta($userId, 'last_name', true),
+			'phone' => get_user_meta($userId, 'phone', true),
+		);
+		$deliveryAddressId = get_user_meta($userId, 'delivery_address', true);
+		$paymentAddressId = get_user_meta($userId,'payment_address', true);
+		$deliveryAddress = null;
+		$paymentAddress = null;
+		if ($paymentAddressId) {
+			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
+		}
+		if ($deliveryAddressId) {
+			$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $deliveryAddressId])[0];
+		}
 		$deliverer = $em->getRepository('src\DBManager\Tables\Deliverer')->findAll();
 		$taxes = array('5%','8%', '23%');
-		$this->enqueueScript('fill-address');
+		$this->enqueueScript('fill-address', null, ['user' => $user, 'paymentAddress' => $paymentAddress, 'deliveryAddress' => $deliveryAddress], 'ORDER');
 		$this->renderHTML('Shortcodes/summary-form', array(
 			'deliverers' => $deliverer,
 			'taxes' => $taxes,
