@@ -38,7 +38,6 @@ class DisplayProduct extends Controller
 		$this->enqueueScript('root');
 		$this->enqueueScript('catalog');
 		$this->enqueueScript('localStorageUtil');
-		// $this->enqueueScript('navbar', null, ['user' => get_current_user_id()], 'NAVBAR');
 		$this->enqueueScript('Products', null, ['Products' => $results], 'PRODUCTS');
 		$this->enqueueScript('Shopping');
 		$this->enqueueScript('Header');

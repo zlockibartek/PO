@@ -83,5 +83,5 @@
 		</div>
 	</div>
 	<input class="btn btn-primary" type="submit" value="Aktualizuj dane"></input>
-	<a href="<?= $backButton ?>"><button type="button" class="btn btn-primary">Powrót</button></a><br><br>
+	<a class="btn btn-primary" href="<?= $backButton ?>">Powrót</a><br><br>
 </form>

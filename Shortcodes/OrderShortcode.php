@@ -32,9 +32,18 @@ class OrderShortcode extends Controller
 	{
 		$dbManager = new DBManager();
 		$em = $dbManager->entityManager;
-		if ($_POST) {
-			$this->saveToDB();
+		if (isset($_POST['price'])){
+			$price = $_POST['price'];
+			$weight = $_POST['weight'];
+			$products = $_POST['products'];
+			unset($_POST['price']);
+			unset($_POST['weight']);
+			unset($_POST['products']);
 		}
+		
+		// if ($_POST) {
+		// 	$this->saveToDB();
+		// }
 
 		$userId = get_current_user_id();
 		$user = array(
@@ -58,6 +67,8 @@ class OrderShortcode extends Controller
 		$this->renderHTML('Shortcodes/summary-form', array(
 			'deliverers' => $deliverer,
 			'taxes' => $taxes,
+			'price' => $price,
+			'weight' => $weight,
 		));
 	}
 
@@ -119,6 +130,7 @@ class OrderShortcode extends Controller
 			$em->persist($product);
 			$em->flush();
 		}
+		$this->enqueueScript('clear-basket');
 	}
 
 	public function createUser()

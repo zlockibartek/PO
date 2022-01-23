@@ -45,7 +45,11 @@ class UserPanel extends Controller
 			$user = wp_get_current_user();
 			if ($user && wp_check_password($current, $user->data->user_pass, $user->ID) && $new == $repeat) {
 				wp_set_password($new, $user->ID);
+				$this->renderHTML('message', ['message' => 'Hasło zaktualizowane pomyślnie', 'status' => 'success']);
+				die();
 			}
+			$this->renderHTML('message', ['message' => 'Wprowadzone dane są nieprawidłowe', 'status' => 'danger']);
+			die();
 		}
 	}
 
@@ -69,7 +73,7 @@ class UserPanel extends Controller
 				'last_name' => $_POST['surname'],
 				'phone' => isset($_POST['phone']) ? $_POST['phone'] : '',
 			]);
-			
+
 			extract($_POST);
 
 			if ($paymentCity && $paymentStreet && $paymentBuilding && $paymentPostal) {
@@ -93,6 +97,8 @@ class UserPanel extends Controller
 				$em->flush();
 				update_user_meta($userId, 'delivery_address', $deliveryAddress->getId());
 			}
+			$this->renderHTML('message', ['message' => 'Dane zaktualizowane pomyślnie', 'status' => 'success']);
+			die();
 		}
 		$name = get_user_meta($userId, 'first_name', true);
 		$surname = get_user_meta($userId, 'last_name', true);

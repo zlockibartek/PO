@@ -2,6 +2,10 @@ const productContainer = document.querySelector('#productContainer')
 const totalPrice = document.querySelector('#totalPrice')
 const totalWeight = document.querySelector('#totalWeight')
 const summary = document.querySelector('#summary')
+const form = document.querySelector('#orderForm')
+const priceInput = document.querySelector('input[name=price]')
+const weightInput = document.querySelector('input[name=weight]')
+const productsInput = document.querySelector('input[name=products]')
 
 jQuery(($) => {
     let products = JSON.parse(localStorage.getItem("quantity"));
@@ -77,7 +81,10 @@ function createOrders(products) {
 
         productContainer.appendChild(row)
     })
-    totalPrice.innerText = sumPrice
+    totalPrice.innerText = sumPrice.toFixed(2)
     totalWeight.innerText = sumWeight
-    summary.setAttribute('href', href)
+    form.setAttribute('action', href)
+    priceInput.value = sumPrice.toFixed(2)
+    weightInput.value = sumWeight
+    productsInput.value = href
 }

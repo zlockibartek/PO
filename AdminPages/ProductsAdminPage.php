@@ -37,8 +37,11 @@ class ProductsAdminPage extends Controller
 
 		if (isset($_GET['remove'])) {
 			$product = $em->find('src\DBManager\Tables\Product', $_GET['remove']);
-			$em->remove($product);
-			$em->flush();
+			$orderPosition = $em->getRepository('src\DBManager\Tables\OrderPosition')->findBy(['productId' => $product->getId()]);
+			if (empty($orderPosition)) {
+				$em->remove($product);
+				$em->flush();
+			}
 		}
 		wp_enqueue_style('datatable', '//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css');
 		wp_enqueue_script('datatable', '//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js');
@@ -62,6 +65,7 @@ class ProductsAdminPage extends Controller
 		if ($id != 0) {
 			$product = $em->find('src\DBManager\Tables\Product', $id);
 			$type = $product->getType();
+			$weight = array($product->getWeight());
 		} else {
 			$product = new Product();
 		}

@@ -4,11 +4,11 @@
 </head>
 
 <form class="products" action="<?= $id == 0 ? $backButton : '' ?>" method="POST" enctype="multipart/form-data">
-	<h3>Dodaj produkt</h3>
+	<h3><?= $id == 0 ? 'Dodaj' : 'Edytuj' ?> produkt</h3>
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="validationTooltip03">Nazwa produktu</label>
-			<input type="text" class="form-control" id="validationTooltip03" name="name" placeholder="Wprowadź nazwę produktu" value="<?= $product->getTitle() ?>" required>
+			<input type="text" class="form-control" id="validationTooltip03" <?= $id != 0 ? 'disabled' : '' ?> name="name" placeholder="Wprowadź nazwę produktu" value="<?= $product->getTitle() ?>" required>
 		</div>
 	</div>
 

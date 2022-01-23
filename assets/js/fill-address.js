@@ -84,7 +84,7 @@ function enableInputs(parent) {
 checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
         let div = this.closest('.form-row').parentElement
-        if (this.checked) {
+        if (!this.checked) {
             if (div.id == 'delivery') {
                 clearDeliveryAddress()
             } else {
@@ -102,8 +102,3 @@ checkboxes.forEach(checkbox => {
 
     })
 })
-
-blockInputs(deliveryDiv)
-blockInputs(paymentDiv)
-fillPaymentAddress(paymentAddress)
-fillDeliveryAddress(deliveryAddress)
