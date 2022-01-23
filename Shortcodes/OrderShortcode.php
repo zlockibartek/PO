@@ -44,8 +44,8 @@ class OrderShortcode extends Controller
 		);
 		$deliveryAddressId = get_user_meta($userId, 'delivery_address', true);
 		$paymentAddressId = get_user_meta($userId,'payment_address', true);
-		$deliveryAddress = null;
-		$paymentAddress = null;
+		$deliveryAddress = new Address();
+		$paymentAddress = new Address();
 		if ($paymentAddressId) {
 			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
 		}

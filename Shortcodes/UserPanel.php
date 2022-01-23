@@ -98,7 +98,8 @@ class UserPanel extends Controller
 		$surname = get_user_meta($userId, 'last_name', true);
 		$email = $user->user_email;
 		$phone = get_user_meta($userId, 'phone', true);
+		$nick = get_user_meta($userId, 'nickname', true);
 
-		return compact('surname', 'email', 'phone', 'deliveryAddress', 'paymentAddress', 'name');
+		return compact('surname', 'email', 'phone', 'deliveryAddress', 'paymentAddress', 'name', 'nick');
 	}
 }

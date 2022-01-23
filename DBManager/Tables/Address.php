@@ -15,29 +15,29 @@ class Address
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
 	 */
-	private $id;
+	public $id;
 
 	/**
 	 *@ORM\Column(type="string")
 	 */
-	private $town;
+	public $town;
 
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	private $street;
+	public $street;
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	private $building;
+	public $building;
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	private $apartament;
+	public $apartament;
 	/**
 	 * @ORM\Column(type="string")
 	 */
-	private $postalCode;
+	public $postalCode;
 
 	/**
 	 * Get the value of id

@@ -22,7 +22,7 @@
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productQuantity" class="form-label">Ilość sztuk w magazynie</label>
-			<input type="number" class="form-control" id="productQuantity" min="0" max="100" name="quantity" value="<?= $product->getQuantity() ?>" placeholder="Wprowadź liczbę sztuk">
+			<input type="number" class="form-control" id="productQuantity" min="0" max="1000" name="quantity" value="<?= $product->getQuantity() ?>" placeholder="Wprowadź liczbę sztuk">
 		</div>
 	</div>
 

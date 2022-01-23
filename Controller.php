@@ -83,6 +83,7 @@ class Controller
 		$html = ob_get_clean();
 		echo $html;
 	}
+	
 
 	public function enqueueStyle($name, $path = null) {
 		\wp_enqueue_style($name, plugins_url('', __FILE__) . '/assets/css/' . $name .'.css');

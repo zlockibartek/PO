@@ -43,7 +43,7 @@
 			</div>
 			<div class="col-md-3 mb-3">
 				<label for="paymentPostal">Kod pocztowy</label>
-				<input type="text" class="form-control" id="paymentPostal" placeholder="Zip" name="paymentPostalCode" required>
+				<input type="text" class="form-control" id="paymentPostal" pattern="\d{2}-\d{3}" placeholder="Zip" name="paymentPostalCode" required>
 			</div>
 		</div>
 		<div class="form-row">
@@ -77,7 +77,7 @@
 			</div>
 			<div class="col-md-3 mb-3">
 				<label for="deliveryPostalCode">Kod pocztowy</label>
-				<input type="text" class="form-control" id="deliveryPostalCode" placeholder="Zip" name="deliveryPostalCode" require>
+				<input type="text" class="form-control" id="deliveryPostalCode" pattern="\d{2}-\d{3}" placeholder="Zip" name="deliveryPostalCode" require>
 			</div>
 		</div>
 		<div class="form-row">
@@ -128,7 +128,7 @@
 	<div class="form-row">
 		<div class="col-md-3 mb-3">
 			<label for="deliveryApartment">Numer NIP</label>
-			<input type="text" class="form-control" id="deliveryApartment"  name="nip">
+			<input type="text" class="form-control" pattern="^((\d{3}[- ]\d{3}[- ]\d{2}[- ]\d{2})|(\d{3}[- ]\d{2}[- ]\d{2}[- ]\d{3}))$" id="deliveryApartment"  name="nip">
 		</div>
 	</div>
 	<div class="form-row">

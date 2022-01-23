@@ -6,6 +6,7 @@ const paymentDiv = document.querySelector('#payment')
 const username = document.querySelector('#name')
 const surname = document.querySelector('#surname')
 const phone = document.querySelector('#phone')
+
 const user = ORDER.user
 const deliveryAddress = ORDER.deliveryAddress
 const paymentAddress = ORDER.paymentAddress
