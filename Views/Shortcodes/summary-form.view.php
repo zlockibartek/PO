@@ -42,8 +42,8 @@
 				<input type="text" class="form-control" id="paymentCity" placeholder="Miasto" name="paymentCity" required>
 			</div>
 			<div class="col-md-3 mb-3">
-				<label for="paymentPostal">Kod pocztowy</label>
-				<input type="text" class="form-control" id="paymentPostal" pattern="\d{2}-\d{3}" placeholder="Zip" name="paymentPostalCode" required>
+				<label for="paymentPostalCode">Kod pocztowy</label>
+				<input type="text" class="form-control" id="paymentPostalCode" pattern="\d{2}-\d{3}" placeholder="Zip" name="paymentPostalCode" required>
 			</div>
 		</div>
 		<div class="form-row">
