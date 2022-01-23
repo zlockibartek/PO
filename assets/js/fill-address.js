@@ -1,18 +1,18 @@
 const delivery = document.querySelector('#deliveryAddress')
 const payment = document.querySelector('#paymentAddress')
-const own = document.querySelector('#ownAddress')
 const switchAddress = document.querySelector('#switch')
+const deliveryDiv = document.querySelector('#delivery')
+const paymentDiv = document.querySelector('#payment')
 
 switchAddress.addEventListener('click', function() {
-    let option = ''
     if (delivery.checked) {
-        option = 'delivery'
+        deliveryDiv.hidden = false
+        paymentDiv.hidden = true
     }
     if (payment.checked) {
-        option = 'payment'
+        deliveryDiv.hidden = true
+        paymentDiv.hidden = false
     }
-    if (own.checked) {
-        option = 'own'
-    }
+
 
 })

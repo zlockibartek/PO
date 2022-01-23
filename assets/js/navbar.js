@@ -25,5 +25,5 @@ if (NAVBAR.user == 0) {
 
     a[0].hidden = false
     a[1].innerText = "Zaloguj"
-    a[1].href = "http://multi.localhost/wp-admin/"
+    a[1].href = "http://po.apache:8081/wp-admin"
 }

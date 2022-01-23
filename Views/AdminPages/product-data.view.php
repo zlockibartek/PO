@@ -22,27 +22,27 @@
 	<div class="form-row">
 		<div class="col-md-6 md-3">
 			<label for="productQuantity" class="form-label">Ilość sztuk w magazynie</label>
-			<input type="number" class="form-control" id="productQuantity" min="0" name="quantity" value="<?= $product->getQuantity() ?>" placeholder="Wprowadź liczbę sztuk">
+			<input type="number" class="form-control" id="productQuantity" min="0" max="100" name="quantity" value="<?= $product->getQuantity() ?>" placeholder="Wprowadź liczbę sztuk">
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
-			<label for="productPrice" class="form-label">Cena</label>
+			<label for="productPrice" class="form-label">Cena [zł]</label>
 			<input type="number" class="form-control" id="productPrice" min="0" step="0.01" name="price" value="<?= $product->getPrice() ?>" placeholder="Wprowadź cenę produktu" required>
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
-			<label for="productDiscount" class="form-label">Rabat</label>
+			<label for="productDiscount" class="form-label">Rabat [%]</label>
 			<input type="number" class="form-control" id="productDiscount" min="0" max="100" name="discount" value="<?= $product->getDiscount() ?>" placeholder="Wprowadź rabat" value="0">
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="col-md-6 md-3">
-			<label for="selectWeight">Waga produktu</label>
+			<label for="selectWeight">Waga produktu [g]</label>
 			<select class="form-control" id="selectWeight" name="weight">
 				<?php foreach ($weight as $type) : ?>
 					<option <?= $product->getWeight() == $type ? 'selected' : '' ?> value="<?= $type ?>"><?= $type ?></option>
@@ -92,7 +92,7 @@
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
-				<label for="brewTime" class="form-label">Czas parzenia</label>
+				<label for="brewTime" class="form-label">Czas parzenia [min]</label>
 				<input type="number" value="<?= $product->getBrewTime() ?>" name="brewTime" class="form-control" min="0" id="brewTime" placeholder="Wprowadź czas parzenia">
 			</div>
 
@@ -138,13 +138,13 @@
 		<div class="form-row">
 			<div class="col-md-6 md-3">
 				<label for="brewQuantity" class="form-label">Data palenia</label>
-				<input type="date" value="<?= $product->getSmokeDate() ?>" name="smokeDate" class="form-control" id="brewQuantity" placeholder="Wprowadź liczbę zaparzeń">
+				<input type="date" value="<?= $product->getSmokeDate() ? $product->getSmokeDate()->format('Y-m-d') : '' ?>" max="<?= (new DateTime('now'))->format('Y-m-d') ?>" name="smokeDate" class="form-control" id="brewQuantity" placeholder="Wprowadź liczbę zaparzeń">
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="col-md-6 md-3">
-				<label for="brewTemp" class="form-label">Temperatura parzenia</label>
+				<label for="brewTemp" class="form-label">Temperatura parzenia [°C]</label>
 				<input type="number" min="0" max="100" value="<?= $product->getBrewTime() ?>" name="temperature" class="form-control" id="brewTemp" placeholder="Wprowadź temperaturę parzenia">
 			</div>
 

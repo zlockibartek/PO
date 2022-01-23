@@ -1,6 +1,4 @@
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark  ">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">bzlocki</a>
@@ -16,7 +14,7 @@
                     <a class="nav-link" href="?action=history">Historia zamówień</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Zarządzaj kontem
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

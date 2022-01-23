@@ -4,9 +4,6 @@ namespace src;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/DBManager.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/Tables/Product.php');
 
-use src\DBManager\EntityManager;
-use src\DBManager\Tables\Product;
-
 class Controller
 {
 	const PATH = __DIR__;
@@ -57,8 +54,23 @@ class Controller
 			if (strpos($adminPage, '.php')) {
 				$classNamespace = self::NAMESPACE . 'AdminPages\\' . str_replace('.php', '', $adminPage);
 				require_once($adminPagesPath . '\\' . $adminPage);
+				
 				$class = new $classNamespace();	
 				add_action('admin_menu', array($class, 'register'));
+			}
+		}
+	}
+
+	public function registerFilters()
+	{
+		$filtersPath = self::PATH . '\Filters';
+		$filters = scandir($filtersPath);
+		foreach ($filters as $filter) {
+			if (strpos($filter, '.php')) {
+				$classNamespace = self::NAMESPACE . 'Filters\\' . str_replace('.php', '', $filter);
+				require_once($filtersPath . '\\' . $filter);
+				$class = new $classNamespace();	
+				add_filter($class->tag, array($class, 'handler'));
 			}
 		}
 	}
@@ -77,16 +89,27 @@ class Controller
 	}
 
 	public function enqueueScript($name, $path = null, $data = null, $dataName = null) {
-		\wp_enqueue_script($name, plugins_url('', __FILE__) . '/assets/js/' . $name .'.js', [], false, true);
+		\wp_enqueue_script($name, plugins_url('', __FILE__) . '/assets/js/' . $name .'.js', ['jquery'], false, true);
 		if ($data) {	
 			\wp_add_inline_script($name, 'const ' . $dataName . ' = ' . json_encode($data), 'before');	
 		}
 	}
 
 	private function addRoles() {
-		add_role('employee', 'Pracownik', array());	
-		add_role('manager', 'Administrator', array());	
+		add_role('employee', 'Pracownik', array(
+			'edit_dashboard' => true,
+		));	
+		add_role('manager', 'Administrator', array(
+			'delete_users' => true,
+			'create_users' => true,
+			'edit_users' => true,
+			'remove_users' => true,
+			'promote_users' => true,
+			'edit_dashboard' => true,
+			'read' => true,
+		));	
 		add_role('client', 'Klient', array());	
 		
 	}
+	
 }

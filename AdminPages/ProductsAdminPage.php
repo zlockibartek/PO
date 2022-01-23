@@ -2,11 +2,12 @@
 
 namespace src\AdminPages;
 
+use DateTime;
 use src\Controller;
 use src\DBManager\DBManager;
 use src\DBManager\Tables\Product;
 
-class Products extends Controller
+class ProductsAdminPage extends Controller
 {
 	public function register()
 	{
@@ -34,7 +35,7 @@ class Products extends Controller
 			return;
 		}
 
-		if ($_GET['remove']) {
+		if (isset($_GET['remove'])) {
 			$product = $em->find('src\DBManager\Tables\Product', $_GET['remove']);
 			$em->remove($product);
 			$em->flush();
@@ -43,7 +44,7 @@ class Products extends Controller
 		wp_enqueue_script('datatable', '//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js');
 		$this->enqueueScript('product-pagination');
 		$products = $em->getRepository('src\DBManager\Tables\Product')->findAll();
-		$this->renderHTML('AdminPages/product-panel', ['backButton' => get_permalink(), 'adminURL' => admin_url('?page=user-data'), 'products' => $products]);
+		$this->renderHTML('AdminPages/product-panel', ['backButton' => 'http://po.apache:8081/wp-admin/admin.php?page=user-data', 'adminURL' => admin_url('?page=user-data'), 'products' => $products]);
 	}
 
 	public function modifyProduct($id, $em)
@@ -53,7 +54,7 @@ class Products extends Controller
 		$brewTime = array('1-3 min', '3-5 min', '5-7 min');
 		$teaTypes = array('Biała', 'Czarna', 'Pu-erh', 'Rooibos', 'Ulung', 'Zielona');
 		$coffeeTypes = array('Arabica','Liberika', 'Robusta');
-		$weight = array('50g', '150g', '250g');
+		$weight = array('50', '150', '250');
 		$grind = array('Drobne', "Średnie", "Grube");
 		$brewQuantity = array(1, 2, 3, 5);
 		$type = '';
@@ -75,7 +76,7 @@ class Products extends Controller
 			'countriesTea' => $countriesTea,
 			'countriesCoffee' => $countriesCoffee,
 			'product' => $product,
-			'backButton' => 'http://multi.localhost/wp-admin/admin.php?page=user-data',
+			'backButton' => 'http://po.apache:8081/wp-admin/admin.php?page=user-data',
 			'productType' => $type,
 			'brewQuantity' => $brewQuantity,
 			'brewTime' => $brewTime,
@@ -92,6 +93,11 @@ class Products extends Controller
 		if ($id != 0) {
 			$product = $em->find('src\DBManager\Tables\Product', $id);
 		} else {
+			$product = $em->getRepository('src\DBManager\Tables\Product')->findBy(['title' => $_POST['name'], 'weight' => $_POST['weight']]);
+			if (!empty($product)) {
+				$this->renderHTML('message', ['message' => 'Produkt o danej wadze i nazwie już istnieje!', 'status' => 'danger']);
+				return;
+			}
 			$product = new Product();
 		}
 
@@ -141,8 +147,7 @@ class Products extends Controller
 				$product->setGrind($_POST['grind']);
 			}
 			if (isset($_POST['smokeDate'])) {
-		
-				$product->setsmokeDate($_POST['smokeDate'] == '' ? null : $_POST['smokeDate']);
+				$product->setsmokeDate($_POST['smokeDate'] == '' ? null : new DateTime($_POST['smokeDate']));
 			}
 			if (isset($_POST['temperature'])) {
 				$product->setTemperature($_POST['temperature']);

@@ -8,7 +8,7 @@ jQuery(($) => {
     if (products && products != []) {
         $.ajax({
             type: "POST",
-            url: "http://multi.localhost/wp-admin/admin-ajax.php?action=orders",
+            url: "http://po.apache:8081/wp-admin/admin-ajax.php?action=orders",
             data: { products },
             success: function(result) {
                 createOrders(result)

@@ -19,11 +19,11 @@ class UserPanel extends Controller
 		switch ($action) {
 			case 'address':
 				$content = $this->personalData($em);
-				$this->renderHTML('AdminPages/user-data', ['content' => $content, 'backButton' => 'http://multi.localhost/menu-uzytkownika/']);
+				$this->renderHTML('AdminPages/user-data', ['content' => $content, 'backButton' => '/menu-uzytkownika/']);
 				break;
 			case 'password':
 				$this->changePassword();
-				$this->renderHTML('AdminPages/user-password', ['backButton' => 'http://multi.localhost/menu-uzytkownika/']);
+				$this->renderHTML('AdminPages/user-password', ['backButton' => '/menu-uzytkownika/']);
 				break;
 			case 'history':
 				$this->renderHTML('AdminPages/user-orders');
@@ -57,18 +57,19 @@ class UserPanel extends Controller
 		$paymentAddressId = get_user_meta($userId, 'payment_address', true);
 		$deliveryAddressId = $deliveryAddressId ?? 0;
 		$paymentAddressId = $paymentAddressId ?? 0;
-		$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $deliveryAddressId])[0];
-		$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
-		$deliveryAddress = $deliveryAddress ?? new Address();
-		$paymentAddress = $paymentAddress ?? new Address();
+		$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $deliveryAddressId]);
+		$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId]);
+		$deliveryAddress = !empty($deliveryAddress) ? $deliveryAddress[0] : new Address();
+		$paymentAddress = !empty($paymentAddress) ? $paymentAddress[0] : new Address();
 
 		if ($_POST) {
 			wp_update_user([
 				'ID' => $userId,
-				'first_name' => $_POST['name'],
+				'first_name' => $_POST['username'],
 				'last_name' => $_POST['surname'],
 				'phone' => isset($_POST['phone']) ? $_POST['phone'] : '',
 			]);
+			
 			extract($_POST);
 
 			if ($paymentCity && $paymentStreet && $paymentBuilding && $paymentPostal) {
@@ -93,9 +94,8 @@ class UserPanel extends Controller
 				update_user_meta($userId, 'delivery_address', $deliveryAddress->getId());
 			}
 		}
-
-		$name = $user->user_name;
-		$surname = $user->user_surname;
+		$name = get_user_meta($userId, 'first_name', true);
+		$surname = get_user_meta($userId, 'last_name', true);
 		$email = $user->user_email;
 		$phone = get_user_meta($userId, 'phone', true);
 

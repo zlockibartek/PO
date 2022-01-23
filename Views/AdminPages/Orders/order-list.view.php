@@ -14,14 +14,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($products as $product) : ?>
+		<?php foreach ($orders as $order) : ?>
 			<tr>
-				<td><?= $product->getId() ?></td>
-				<td><?= $product->getPaymentStatus() ?></td>
-				<td><?= $product->getDeliveryStatus() ?></td>
-				<td><?= $product->getClientId() ?></td>
-				<td><?= $product->getDelivererId() ?></td>
-				<td><a href="<?= $adminURL ?>&edit=<?= $product->getId() ?>"><button class="btn btn-success">Edytuj</button></a> <a href="<?= $adminURL ?>&remove=<?= $product->getId() ?>"><button class="btn btn-danger">Usuń</button></a></td>
+				<td><?= $order->getId() ?></td>
+				<td><?= $order->getPaymentStatus() ?></td>
+				<td><?= $order->getDeliveryStatus() ?></td>
+				<td><?= $order->getClientId() ?></td>
+				<td><?= $order->getDelivererId() ?></td>
+				<td><a href="<?= $adminURL ?>&edit=<?= $order->getId() ?>"><button class="btn btn-success">Edytuj</button></a> </td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

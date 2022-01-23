@@ -17,7 +17,7 @@
 
                 <div class="card-footer">
                     <div class="pull-right" style="margin: 10px">
-                        <a href="http://multi.localhost/zamowienie/" class="btn btn-success pull-right">Przejdź do kasy</a>
+                        <a href="http://po.apache:8081/zamowienie/" class="btn btn-success pull-right">Przejdź do kasy</a>
                         <div class="pull-right" style="margin: 5px">
                             Suma: <b id="totalPrice"></b> zł
                         </div>

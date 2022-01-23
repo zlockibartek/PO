@@ -29,7 +29,7 @@ class DisplayProduct extends Controller
 				'quantity' => $quantity,
 			);
 		}
-		$this->enqueueStyle('product-list');
+		$this->enqueueStyle('index');
 		$this->enqueueStyle('cart');
 		$this->enqueueStyle('Header');
 		$this->enqueueStyle('Products');
