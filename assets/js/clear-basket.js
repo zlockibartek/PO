@@ -1,2 +1,2 @@
-localStorage.products = []
-localStorage.quantity = []
+localStorage.products = JSON.stringify([])
+localStorage.quantity = JSON.stringify([])

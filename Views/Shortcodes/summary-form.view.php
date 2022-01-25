@@ -33,7 +33,7 @@
 		<div class="form-row">
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="ownPayment" id="ownPayment">
-				<label class="form-check-label" for="ownPayment">Własny</label>
+				<label class="form-check-label" for="ownPayment">Domyślny</label>
 			</div>
 		</div>
 		<div class="form-row">
@@ -66,7 +66,7 @@
 		<div class="form-row">
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="ownDelivery" id="ownDelivery">
-				<label class="form-check-label" for="ownDelivery">Własny</label>
+				<label class="form-check-label" for="ownDelivery">Domyślny</label>
 			</div>
 		</div>
 		<div class="form-row">
@@ -142,5 +142,20 @@
 		</div>
 	</div>
 	<br>
+	<input type="hidden" name="price" value="<?= $price ?>">
+	<input type="hidden" name="weight" value="<?= $weight ?>">
+	<input type="hidden" name="products" value="<?= $products ?>">
+	<div>
+		Koszt produktów: <b id="productPrice"><?= $price ?></b> zł
+	</div>
+	<div>
+		Dostawa: <b id="deliveryPrice"></b> zł
+	</div>
+	<div>
+		Suma: <b id="totalPrice"></b> zł
+	</div>
+	<div>
+		Waga: <b id="totalWeight"><?= $weight ?></b> g
+	</div>
 	<input class="btn btn-primary" type="submit" value="Złóż zamówienie">
 </form>

@@ -20,10 +20,14 @@ class DisplayProduct extends Controller
 			$quantity = $product->getQuantity();
 			if ($quantity == 0) 
 				continue;
+			$discount = $product->getDiscount();
+			$price = $product->getPrice();
+			$price = $discount ? $price * ((100 -$discount) / 100) : $price;
+			
 			$results[] = array(
 				'id' => $product->getId(),
 				'img' => $product->getPath(),
-				'price' => $product->getPrice(),
+				'price' => number_format($price, 2),
 				'name' => $product->getTitle(),
 				'weight' => $product->getWeight(),
 				'quantity' => $quantity,

@@ -5,6 +5,16 @@ class Products {
         this.labelRemove = "Usuń z koszyka";
     }
 
+    setActiveProducts() {
+        var a = document.getElementsByClassName("products-element");
+        for (var i = 0; i < a.length; i++) {
+            if (localStorageUtil.getProducts().indexOf(a[i].dataset.id) > -1) {
+                a[i].getElementsByTagName("button")[0].classList.add("products-element__btn_active");
+                a[i].getElementsByTagName("button")[0].innerText = "Usuń z koszyka"
+            }
+        }
+    }
+
     handleSetLocationStorage(element, id) {
         const { pushProduct, products } = localStorageUtil.putProducts(id);
 
@@ -69,3 +79,4 @@ class Products {
 
 const productsPage = new Products();
 productsPage.render();
+productsPage.setActiveProducts()

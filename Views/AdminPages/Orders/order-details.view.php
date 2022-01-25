@@ -33,7 +33,7 @@
 		</div>
 	</div>
           <br>
-  <div class="form-row">
+  <div class="form-row" hidden>
 		<div class="col-md-6 md-3">
 			<label for="paymentDate">Data płatności</label>
 			<input type="date" max="<?= (new DateTime('now'))->format('Y-m-d') ?>" value="<?= $order->getPaymentDate() ? $order->getPaymentDate()->format('Y-m-d') : '' ?>" name="paymentDate">

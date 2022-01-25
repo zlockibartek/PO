@@ -23,6 +23,10 @@ class OrderEntity
 	 */
 	private $price;
 	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $weight;
+	/**
 	 * @ORM\Column(type="string")
 	 */
 	private $paymentStatus;
@@ -267,6 +271,24 @@ class OrderEntity
 	public function setOrderStatus($orderStatus): self
 	{
 		$this->orderStatus = $orderStatus;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of weight
+	 */
+	public function getWeight()
+	{
+		return $this->weight;
+	}
+
+	/**
+	 * Set the value of weight
+	 */
+	public function setWeight($weight): self
+	{
+		$this->weight = $weight;
 
 		return $this;
 	}

@@ -18,10 +18,15 @@ class OrderShortcode extends Controller
 	function handler($atts)
 	{
 
-		if ($_GET) {
+		if ($_POST) {
+			if (get_current_user_id() == 0 && $_POST['price'] > 100) {
+				$this->renderHTML('message', ['message' => "Przy zamówieniach powyżej 100zł musisz być zalogowany!", 'status' => 'danger']);
+				die();
+			}
 			$this->summary();
 			return;
 		}
+		
 		$this->enqueueScript('order');
 		$this->enqueueStyle('product-list');
 		$this->enqueueStyle('Products');
@@ -41,9 +46,9 @@ class OrderShortcode extends Controller
 			unset($_POST['products']);
 		}
 		
-		// if ($_POST) {
-		// 	$this->saveToDB();
-		// }
+		if ($_POST) {
+			$this->saveToDB($price, $weight, $products);
+		}
 
 		$userId = get_current_user_id();
 		$user = array(
@@ -69,10 +74,11 @@ class OrderShortcode extends Controller
 			'taxes' => $taxes,
 			'price' => $price,
 			'weight' => $weight,
+			'products' => $products,
 		));
 	}
 
-	public function saveToDB()
+	public function saveToDB($price, $weight, $products)
 	{
 		$dbManager = new DBManager();
 		$em = $dbManager->entityManager;
@@ -85,8 +91,6 @@ class OrderShortcode extends Controller
 			$userId = get_current_user_id();
 		}
 		$addresses = $this->addAddress($em, $userId);
-
-		$products = $_GET['order'];
 		$products = explode(';', $products);
 
 		$note->setNIP($_POST['nip']);
@@ -96,7 +100,8 @@ class OrderShortcode extends Controller
 		$order->setDeliveryAddressId($addresses[0]);
 		$order->setPaymentAddressId($addresses[1]);
 		$order->setPaymentMethod($_POST['paymentMethod']);
-		$order->setPrice(100);
+		$order->setPrice($price);
+		$order->setWeight($weight);
 		$order->setDelivererId($_POST['deliverer']);
 		$order->setClientId($userId);
 		$order->setPaymentStatus('Nieopłacony');
@@ -106,19 +111,19 @@ class OrderShortcode extends Controller
 		$em->persist($order);
 		$em->flush();
 		
-		
 		$note->setOrderId($order->getId());
 		$em->persist($note);
 		$em->flush();
 		$order->setNoteId($note->getId());
 		$em->persist($order);
 		$em->flush();
-
+		
 		foreach ($products as $product) {
 			$details = explode(',',$product);
 			if (empty($details[0])) {
 				continue;
 			}
+			
 			$orderPosition = new OrderPosition();
 			$orderPosition->setProductId($details[0]);
 			$orderPosition->setOrderId($order->getId());
@@ -158,7 +163,8 @@ class OrderShortcode extends Controller
 	{
 		$paymentAddressId = get_user_meta($userId, 'payment_address', true);
 		$deliveryAddressId = get_user_meta($userId, 'delivery_address', true);
-		if ($userId == 0 || isset($_POST['ownPayment']) || !$paymentAddressId) {
+		
+		if ($userId == 0 || !isset($_POST['ownPayment']) ) {
 			$paymentAddress = new Address();
 			$paymentAddress->setTown($_POST['paymentCity']);
 			$paymentAddress->setStreet($_POST['paymentStreet']);
@@ -168,9 +174,9 @@ class OrderShortcode extends Controller
 			$em->persist($paymentAddress);
 			$em->flush();
 		} else {
-			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy($paymentAddressId);
+			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
 		}
-		if ($userId == 0 || isset($_POST['ownDelivery']) || !$paymentAddressId) {
+		if ($userId == 0 || !isset($_POST['ownDelivery']) ) {
 			$deliveryAddress = new Address();
 			$deliveryAddress->setTown($_POST['deliveryCity']);
 			$deliveryAddress->setStreet($_POST['deliveryStreet']);
@@ -180,7 +186,7 @@ class OrderShortcode extends Controller
 			$em->persist($deliveryAddress);
 			$em->flush();
 		} else {
-			$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy($deliveryAddressId);
+			$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $deliveryAddressId])[0];
 		}
 		return [$deliveryAddress->getId(), $paymentAddress->getId()];
 	}

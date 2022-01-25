@@ -7,6 +7,7 @@ const priceInput = document.querySelector('input[name=price]')
 const weightInput = document.querySelector('input[name=weight]')
 const productsInput = document.querySelector('input[name=products]')
 
+
 jQuery(($) => {
     let products = JSON.parse(localStorage.getItem("quantity"));
     if (products && products != []) {
@@ -15,6 +16,9 @@ jQuery(($) => {
             url: "http://po.apache:8081/wp-admin/admin-ajax.php?action=orders",
             data: { products },
             success: function(result) {
+                if (result.length == 0) {
+                    summary.disabled = true
+                }
                 createOrders(result)
             },
         });
@@ -24,7 +28,7 @@ jQuery(($) => {
 function createOrders(products) {
     let sumPrice = 0
     let sumWeight = 0
-    let href = '?order='
+    let href = ''
     products.forEach(element => {
         console.log(element)
         href += element.id + ',' + element.quantity + ';'
@@ -83,7 +87,6 @@ function createOrders(products) {
     })
     totalPrice.innerText = sumPrice.toFixed(2)
     totalWeight.innerText = sumWeight
-    form.setAttribute('action', href)
     priceInput.value = sumPrice.toFixed(2)
     weightInput.value = sumWeight
     productsInput.value = href

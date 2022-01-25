@@ -58,6 +58,7 @@ class OrdersAdminPage extends Controller
 			'tax' => $note->getTax(),
 			'userDate' => $note->getDate()->format('Y-m-d'),
 		);
+		$this->enqueueScript('show-date');
 		$this->renderHTML('AdminPages/Orders/order-details', array(
 			'deliveryOptions' => $deliveryOptions,
 			'orderOptions' => $orderOptions,
