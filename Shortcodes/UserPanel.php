@@ -26,16 +26,23 @@ class UserPanel extends Controller
 				$this->renderHTML('AdminPages/user-password', ['backButton' => '/menu-uzytkownika/']);
 				break;
 			case 'history':
-				$this->renderHTML('AdminPages/user-orders');
-				break;
-			case 'details':
-				$this->renderHTML('AdminPages/order-details');
+				$orders = $this->getOrders($em);
+				wp_enqueue_style('datatable', '//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css');
+				wp_enqueue_script('datatable', '//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js');
+				$this->enqueueScript('product-pagination');
+				$this->renderHTML('AdminPages/user-orders', ['orders' => $orders, 'backButton' => '/menu-uzytkownika/']);
 				break;
 			default:
 				$content = $this->personalData($em);
 				$this->renderHTML('AdminPages/user-panel', ['content' => $content]);
 				break;
 		}
+	}
+
+	public function getOrders($em)
+	{
+		$orders = $em->getRepository('src\DBManager\Tables\OrderEntity')->findBy(['clientId' => get_current_user_id()]);
+		return $orders;
 	}
 
 	public function changePassword()

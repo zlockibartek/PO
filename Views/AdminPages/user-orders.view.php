@@ -5,31 +5,22 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Data zamówienia</th>
-      <th scope="col">Data dostarczenia</th>
+      <th scope="col">Data płatności</th>
       <th scope="col">Kwota</th>
       <th scope="col">Status</th>
-      <th scope="col">Szczegóły</th>
     </tr>
   </thead>
   <tbody>
+    <?php foreach ($orders as $order): ?>
   <tr>
-      <th scope="row">1</th>
       <td>15:22 12-11-2021</td>
-      <td> - </td>
-      <td>105,20 zł</td>
+      <td><?= $order->getPaymentDate() ? $order->getPaymentDate()->format('Y-m-d') : '' ?> </td>
+      <td><?= $order->getPrice() ?> zł</td>
       <td>W trakcie realizacji</td>
-      <td><a href="<?= $backButton . '?action=details' ?>"><button type="button" class="btn btn-primary">Zobacz</button></a></td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>15:22 11-11-2021</td>
-      <td>15:22 13-11-2021</td>
-      <td>105,20 zł</td>
-      <td>Dostarczone</td>
-      <td><a href="<?= $backButton . '?action=details' ?>"><button type="button" class="btn btn-primary">Zobacz</button></a></td>
-    </tr>
+    <?php endforeach; ?>
+    
   </tbody>
 </table>
 <a href="<?= $backButton ?>"><button type="button" class="btn btn-primary">Powrót</button></a><br><br>

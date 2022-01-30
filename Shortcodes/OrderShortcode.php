@@ -91,7 +91,8 @@ class OrderShortcode extends Controller
 		}
 
 		$deliverer = $em->getRepository('src\DBManager\Tables\Deliverer')->findAll();
-		if ($this->validateDeliverer($deliverer)) {
+		
+		if (!$this->validateDeliverer($deliverer)) {
 			$this->renderHTML('message', ['message' => 'Na ten moment brakuje kurierów, spróbuj ponownie później', 'status' => 'error']);
 			die();
 		}

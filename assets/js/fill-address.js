@@ -12,18 +12,50 @@ const priceInput = document.querySelector("input[name=price]");
 const productsPrice = document.querySelector("#productPrice");
 const deliveryPrice = document.querySelector("#deliveryPrice");
 const totalPrice = document.querySelector("#totalPrice");
+const inputs = document.querySelectorAll('input')
+const submit = document.querySelectorAll('input[type=submit]')[1]
+
+let requiredFields = []
+inputs.forEach(element => {
+    if (element.required) {
+        requiredFields.push(element)
+    }
+})
+
+submit.addEventListener('click', function() {
+    let message = 'Należy uzupełnić następujące pola: \n'
+    requiredFields.forEach(element => {
+        if (!requiredFields.value) {
+            message += element.previousElementSibling.innerText
+            if (element.closest('#delivery')) {
+                message += " dostawy"
+            }
+            if (element.closest('#payment')) {
+                message += " płatności"
+            }
+            message += '\n'
+        }
+    })
+    if (message) {
+        alert(message)
+    }
+})
 
 const user = ORDER.user;
 const deliveryAddress = ORDER.deliveryAddress;
 const paymentAddress = ORDER.paymentAddress;
 
+
+
 let index = select.selectedIndex;
 let price = select.querySelectorAll("option")[index].dataset.price;
+
 if (parseFloat(productsPrice.innerText).toFixed(2) > 100) {
     deliveryPrice.innerText = 0;
 } else {
     deliveryPrice.innerText = price;
 }
+
 totalPrice.innerText = (
     parseInt(deliveryPrice.innerText) + parseFloat(productsPrice.innerText)
 ).toFixed(2);

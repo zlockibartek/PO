@@ -90,10 +90,9 @@ class Shopping {
 
 
     remove(element, id) {
-        localStorageUtil.putProducts(id)
         document.getElementById("productContainer").innerHTML = this.cartProducts()
         this.updatePriceAndWeight()
-            // console.log(element.closest())   
+        document.querySelector('#button-' + id).click()
     }
 
     render() {

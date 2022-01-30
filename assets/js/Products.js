@@ -50,7 +50,7 @@ class Products {
                     <span class="products-element__price">
                          ${price.toLocaleString()} zł
                     </span>
-                    <button class="products-element__btn${activeClass}" onclick="productsPage.handleSetLocationStorage(this, '${id}');">
+                    <button class="products-element__btn${activeClass}" id="button-${id}" onclick="productsPage.handleSetLocationStorage(this, '${id}');">
                         ${activeText}
                     </button>
                 </li>
@@ -64,16 +64,7 @@ class Products {
         `;
         ROOT_PRODUCTS.innerHTML = html;
         let products = document.querySelectorAll('.products-element')
-        products.forEach(element => {
-            // if (productsStore.includes(element.dataset.id.toString())) {
-            //     element.classList.add(this.classNameActive);
-            //     element.innerHTML = this.labelRemove;
-            // } else {
-            //     element.classList.remove(this.classNameActive);
-            //     element.innerHTML = this.labelAdd;
-            // }
-            console.log(element)
-        })
+        products.forEach(element => {})
     }
 }
 

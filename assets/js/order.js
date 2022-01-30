@@ -70,8 +70,9 @@ function createOrders(products) {
         detailsDiv.setAttribute('class', 'col-12 col-sm-12 text-sm-center col-md-4 text-md-right row ')
         summaryDiv.setAttribute('class', 'col-2 col-sm-2 col-md-2 text-right')
         priceDiv.setAttribute('class', 'col-3 col-sm-3 col-md-6 text-md-right')
+        quantityDiv.setAttribute('class', 'col-4 col-sm-4 col-md-4')
         summaryDiv.appendChild(document.createTextNode(sumPrice))
-        quantityDiv.appendChild(document.createTextNode(element.quantity))
+        quantityDiv.appendChild(document.createTextNode('Ilość: ' + element.quantity))
         price.appendChild(document.createTextNode(element.price + ' zł'))
 
         priceDiv.appendChild(price)
