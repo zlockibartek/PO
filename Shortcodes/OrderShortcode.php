@@ -2,6 +2,9 @@
 
 namespace src\Shortcodes;
 
+require_once('C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\Controller.php');
+require_once('C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\DBManager\DBManager.php');
+
 use DateTime;
 use src\Controller;
 use src\DBManager\DBManager;
@@ -19,55 +22,81 @@ class OrderShortcode extends Controller
 	{
 
 		if ($_POST) {
-			if (get_current_user_id() == 0 && $_POST['price'] > 100) {
+			if (!$this->canOrder(get_current_user_id(), $_POST['price'])) {
 				$this->renderHTML('message', ['message' => "Przy zamówieniach powyżej 100zł musisz być zalogowany!", 'status' => 'danger']);
 				die();
 			}
 			$this->summary();
 			return;
 		}
-		
+
 		$this->enqueueScript('order');
 		$this->enqueueStyle('product-list');
 		$this->enqueueStyle('Products');
 		$this->renderHTML('Shortcodes/order');
 	}
 
+	public function canOrder($userId, $price)
+	{
+		if ($userId != 0)
+			return true;
+		return $userId == 0 && $price <= 100;
+	}
+
 	public function summary()
 	{
 		$dbManager = new DBManager();
 		$em = $dbManager->entityManager;
-		if (isset($_POST['price'])){
+		if (isset($_POST['price'])) {
 			$price = $_POST['price'];
 			$weight = $_POST['weight'];
 			$products = $_POST['products'];
+			if (!$this->validatePrice($price) || !$this->validateWeight($weight) || !$this->validateProducts($products)) {
+				$this->renderHTML('message', ['message' => 'Nie udało się złożyć zamówienia, uzupełnij dane', 'status' => 'danger']);
+				die();
+			}
 			unset($_POST['price']);
 			unset($_POST['weight']);
 			unset($_POST['products']);
 		}
-		
+
 		if ($_POST) {
 			$this->saveToDB($price, $weight, $products);
 		}
 
 		$userId = get_current_user_id();
+
 		$user = array(
 			'name' => get_user_meta($userId, 'first_name', true),
 			'surname' => get_user_meta($userId, 'last_name', true),
 			'phone' => get_user_meta($userId, 'phone', true),
 		);
+
+		if (!$this->validateUser($userId, $user)) {
+			$this->renderHTML('message', ['message' => 'Uzupełnij dane w profilu przed złożeniem zamówienia', 'status' => 'error']);
+			die();
+		}
+
 		$deliveryAddressId = get_user_meta($userId, 'delivery_address', true);
-		$paymentAddressId = get_user_meta($userId,'payment_address', true);
+		$paymentAddressId = get_user_meta($userId, 'payment_address', true);
+
 		$deliveryAddress = new Address();
 		$paymentAddress = new Address();
+
 		if ($paymentAddressId) {
 			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
 		}
 		if ($deliveryAddressId) {
 			$deliveryAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $deliveryAddressId])[0];
 		}
+
 		$deliverer = $em->getRepository('src\DBManager\Tables\Deliverer')->findAll();
-		$taxes = array('5%','8%', '23%');
+		if ($this->validateDeliverer($deliverer)) {
+			$this->renderHTML('message', ['message' => 'Na ten moment brakuje kurierów, spróbuj ponownie później', 'status' => 'error']);
+			die();
+		}
+
+		$taxes = array('5%', '8%', '23%');
 		$this->enqueueScript('fill-address', null, ['user' => $user, 'paymentAddress' => $paymentAddress, 'deliveryAddress' => $deliveryAddress], 'ORDER');
 		$this->renderHTML('Shortcodes/summary-form', array(
 			'deliverers' => $deliverer,
@@ -76,6 +105,66 @@ class OrderShortcode extends Controller
 			'weight' => $weight,
 			'products' => $products,
 		));
+	}
+
+	public function validateDeliverer($deliverer)
+	{
+		return !empty($deliverer);
+	}
+
+	public function validateNip($nip)
+	{
+		if (gettype($nip) != 'string')
+			return false;
+		if (preg_match('/^\d{3}-\d{3}-\d{2}-\d{2}$/', $nip) == 1) {
+			return true;
+		}
+		if (preg_match('/^\d{3}-\d{2}-\d{2}-\d{3}$/', $nip) == 1) {
+			return true;
+		}
+		return false;
+	}
+
+	public function validatePrice($price)
+	{
+		return $price > 0;
+	}
+
+	public function validateCity($city)
+	{
+		return !empty($city);
+	}
+
+	public function validateStreet($street)
+	{
+		return !empty($street);
+	}
+
+	public function validateBuilding($building)
+	{
+		return !empty($building);
+	}
+
+	public function validatePostalCode($postalCode)
+	{
+		return preg_match('/^\d{2}-\d{3}$/', $postalCode) == 1;
+	}
+
+	public function validateProducts($products)
+	{
+		return !empty($products);
+	}
+
+	public function validateWeight($weight)
+	{
+		return $weight > 0 && $weight % 50 == 0;
+	}
+
+	public function validateUser($userId, $userData)
+	{
+		if ($userId == 0)
+			return true;
+		return !empty($userData['name']) && !empty($userData['surname']);
 	}
 
 	public function saveToDB($price, $weight, $products)
@@ -107,23 +196,23 @@ class OrderShortcode extends Controller
 		$order->setPaymentStatus('Nieopłacony');
 		$order->setDeliveryStatus('W przygotowaniu');
 		$order->setOrderStatus('W realizacji');
-		
+
 		$em->persist($order);
 		$em->flush();
-		
+
 		$note->setOrderId($order->getId());
 		$em->persist($note);
 		$em->flush();
 		$order->setNoteId($note->getId());
 		$em->persist($order);
 		$em->flush();
-		
+
 		foreach ($products as $product) {
-			$details = explode(',',$product);
+			$details = explode(',', $product);
 			if (empty($details[0])) {
 				continue;
 			}
-			
+
 			$orderPosition = new OrderPosition();
 			$orderPosition->setProductId($details[0]);
 			$orderPosition->setOrderId($order->getId());
@@ -163,26 +252,44 @@ class OrderShortcode extends Controller
 	{
 		$paymentAddressId = get_user_meta($userId, 'payment_address', true);
 		$deliveryAddressId = get_user_meta($userId, 'delivery_address', true);
-		
-		if ($userId == 0 || !isset($_POST['ownPayment']) ) {
+
+		if ($userId == 0 || !isset($_POST['ownPayment'])) {
 			$paymentAddress = new Address();
 			$paymentAddress->setTown($_POST['paymentCity']);
 			$paymentAddress->setStreet($_POST['paymentStreet']);
 			$paymentAddress->setBuilding($_POST['paymentBuilding']);
 			$paymentAddress->setPostalCode($_POST['paymentPostalCode']);
 			$paymentAddress->setApartament($_POST['paymentApartment']);
+			if (
+				$this->validateCity($_POST['paymentCity'])
+				|| $this->validateStreet($_POST['paymentStreet'])
+				|| $this->validateBuilding($_POST['paymentBuilding'])
+				|| $this->validatePostalCode($_POST['paymentPostalCode'])
+			) {
+				$this->renderHTML('message', ['message' => 'W podanym adresie płatności jest błąd']);
+				die();
+			}
 			$em->persist($paymentAddress);
 			$em->flush();
 		} else {
 			$paymentAddress = $em->getRepository('src\DBManager\Tables\Address')->findBy(['id' => $paymentAddressId])[0];
 		}
-		if ($userId == 0 || !isset($_POST['ownDelivery']) ) {
+		if ($userId == 0 || !isset($_POST['ownDelivery'])) {
 			$deliveryAddress = new Address();
 			$deliveryAddress->setTown($_POST['deliveryCity']);
 			$deliveryAddress->setStreet($_POST['deliveryStreet']);
 			$deliveryAddress->setBuilding($_POST['deliveryBuilding']);
 			$deliveryAddress->setPostalCode($_POST['deliveryPostalCode']);
 			$deliveryAddress->setApartament($_POST['deliveryApartment']);
+			if (
+				$this->validateCity($_POST['deliveryCity'])
+				|| $this->validateStreet($_POST['deliveryStreet'])
+				|| $this->validateBuilding($_POST['deliveryBuilding'])
+				|| $this->validatePostalCode($_POST['deliveryPostalCode'])
+			) {
+				$this->renderHTML('message', ['message' => 'W podanym adresie dostawy jest błąd']);
+				die();
+			}
 			$em->persist($deliveryAddress);
 			$em->flush();
 		} else {

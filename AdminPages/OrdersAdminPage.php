@@ -70,7 +70,7 @@ class OrdersAdminPage extends Controller
 		));
 
 	}
-
+	
 	public function updateData($order) {
 		$order->setDeliveryStatus($_POST['delivery']);
 		$order->setPaymentStatus($_POST['payment']);

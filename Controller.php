@@ -1,8 +1,7 @@
 <?php
 
 namespace src;
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/DBManager.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/Tables/Product.php');
+require_once('C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\DBManager\DBManager.php');
 
 class Controller
 {
@@ -15,7 +14,6 @@ class Controller
 
 	public function __construct()
 	{
-		$this->addRoles();
 	}
 	
 	public function registerShortcodes()
@@ -96,7 +94,7 @@ class Controller
 		}
 	}
 
-	private function addRoles() {
+	public function addRoles() {
 		add_role('employee', 'Pracownik', array(
 			'edit_dashboard' => true,
 		));	
