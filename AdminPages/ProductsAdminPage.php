@@ -6,9 +6,16 @@ use DateTime;
 use src\Controller;
 use src\DBManager\DBManager;
 use src\DBManager\Tables\Product;
-
+/**
+ * Class handling Product panel
+ */
 class ProductsAdminPage extends Controller
 {
+	/**
+	 * Function registering AdminPage in WordPress
+	 *
+	 * @return void
+	 */
 	public function register()
 	{
 		add_menu_page(
@@ -19,7 +26,11 @@ class ProductsAdminPage extends Controller
 			array($this, 'handler'),
 		);
 	}
-
+	/**
+	 * Function calls 'edit' function if given any GET. Otherwise it generates html with all products from DB
+	 *
+	 * @return void
+	 */
 	public function handler()
 	{
 		$DBManager = new DBManager();
@@ -53,7 +64,11 @@ class ProductsAdminPage extends Controller
 		$products = $em->getRepository('src\DBManager\Tables\Product')->findAll();
 		$this->renderHTML('AdminPages/product-panel', ['backButton' => 'http://po.apache:8081/wp-admin/admin.php?page=user-data', 'adminURL' => admin_url('?page=user-data'), 'products' => $products]);
 	}
-
+	/**
+	 * Function that edit product
+	 * @param integer $id
+	 * @param DBManager $em
+	 */
 	public function modifyProduct($id, $em)
 	{
 		$countriesTea = $em->getRepository('src\DBManager\Tables\Country')->findBy(['type' => 'tea'], ['name' => 'ASC']);
@@ -95,7 +110,11 @@ class ProductsAdminPage extends Controller
 			'id' => $id,
 		));
 	}
-
+	/**
+	 * Fucntion to store information in DB
+	 * @param integer $id
+	 * @param DBManager $em
+	 */
 	public function addToDB($id, $em)
 	{
 		if ($id != 0) {
