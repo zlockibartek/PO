@@ -62,14 +62,15 @@ class OrderShortcode extends Controller
 
 		if ($_POST) {
 			$this->saveToDB($price, $weight, $products);
+			return;
 		}
 
 		$userId = get_current_user_id();
 
 		$user = array(
-			'name' => get_user_meta($userId, 'first_name', true),
-			'surname' => get_user_meta($userId, 'last_name', true),
-			'phone' => get_user_meta($userId, 'phone', true),
+			'name' => $userId == 0 ? '' : get_user_meta($userId, 'first_name', true),
+			'surname' => $userId == 0 ? '' : get_user_meta($userId, 'last_name', true),
+			'phone' => $userId == 0 ? '' : get_user_meta($userId, 'phone', true),
 		);
 
 		if (!$this->validateUser($userId, $user)) {
@@ -98,7 +99,7 @@ class OrderShortcode extends Controller
 		}
 
 		$taxes = array('5%', '8%', '23%');
-		$this->enqueueScript('fill-address', null, ['user' => $user, 'paymentAddress' => $paymentAddress, 'deliveryAddress' => $deliveryAddress], 'ORDER');
+		$this->enqueueScript('fill-address', null, ['user' => $user, 'paymentAddress' => $paymentAddress, 'deliveryAddress' => $deliveryAddress, 'userId' => $userId], 'ORDER');
 		$this->renderHTML('Shortcodes/summary-form', array(
 			'deliverers' => $deliverer,
 			'taxes' => $taxes,
@@ -226,6 +227,7 @@ class OrderShortcode extends Controller
 			$em->flush();
 		}
 		$this->enqueueScript('clear-basket');
+		$this->renderHTML('message', ['message' => 'Zamówienie pomyślnie złożone', 'status' => 'success']);
 	}
 
 	public function createUser()
@@ -243,7 +245,7 @@ class OrderShortcode extends Controller
 
 		wp_update_user([
 			'ID' => $userId,
-			'first_name' => $_POST['name'],
+			'first_name' => $_POST['username'],
 			'last_name' => $_POST['surname'],
 			'phone' => isset($_POST['phone']) ? $_POST['phone'] : '',
 		]);
@@ -262,10 +264,10 @@ class OrderShortcode extends Controller
 			$paymentAddress->setPostalCode($_POST['paymentPostalCode']);
 			$paymentAddress->setApartament($_POST['paymentApartment']);
 			if (
-				$this->validateCity($_POST['paymentCity'])
-				|| $this->validateStreet($_POST['paymentStreet'])
-				|| $this->validateBuilding($_POST['paymentBuilding'])
-				|| $this->validatePostalCode($_POST['paymentPostalCode'])
+				!$this->validateCity($_POST['paymentCity'])
+				|| !$this->validateStreet($_POST['paymentStreet'])
+				|| !$this->validateBuilding($_POST['paymentBuilding'])
+				|| !$this->validatePostalCode($_POST['paymentPostalCode'])
 			) {
 				$this->renderHTML('message', ['message' => 'W podanym adresie płatności jest błąd']);
 				die();
@@ -283,10 +285,10 @@ class OrderShortcode extends Controller
 			$deliveryAddress->setPostalCode($_POST['deliveryPostalCode']);
 			$deliveryAddress->setApartament($_POST['deliveryApartment']);
 			if (
-				$this->validateCity($_POST['deliveryCity'])
-				|| $this->validateStreet($_POST['deliveryStreet'])
-				|| $this->validateBuilding($_POST['deliveryBuilding'])
-				|| $this->validatePostalCode($_POST['deliveryPostalCode'])
+				!$this->validateCity($_POST['deliveryCity'])
+				|| !$this->validateStreet($_POST['deliveryStreet'])
+				|| !$this->validateBuilding($_POST['deliveryBuilding'])
+				|| !$this->validatePostalCode($_POST['deliveryPostalCode'])
 			) {
 				$this->renderHTML('message', ['message' => 'W podanym adresie dostawy jest błąd']);
 				die();

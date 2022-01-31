@@ -8,7 +8,12 @@ use src\DBManager\DBManager;
 
 class OrdersAdminPage extends Controller
 {
-	public function register()
+	/**
+	 * Function registering AdminPage in WordPress
+	 *
+	 * @return void
+	 */
+	public function register(): void
 	{
 		add_menu_page(
 			'Zamówienia',
@@ -19,6 +24,11 @@ class OrdersAdminPage extends Controller
 		);
 	}
 
+	/**
+	 * Function calls 'edit' function if given any GET. Otherwise it generates html with all products from DB
+	 *
+	 * @return void
+	 */
 	public function handler()
 	{
 		$DBManager = new DBManager();
@@ -35,6 +45,14 @@ class OrdersAdminPage extends Controller
 		$this->renderHTML('AdminPages/Orders/order-list', ['backButton' => get_permalink(), 'adminURL' => admin_url('?page=orders'), 'orders' => $orders]);
 	}
 
+	/**
+	 * Function gets from DB order with given ID
+	 * if POST is given, function calls 'updateData' and modifies entity
+	 * Entity is shown in rendered HTML
+	 *
+	 * @param integer $orderId 
+	 * @return void
+	 */
 	public function edit($orderId) {
 		$DBManager = new DBManager();
 		$em = $DBManager->entityManager;
@@ -70,7 +88,12 @@ class OrdersAdminPage extends Controller
 		));
 
 	}
-	
+	/**
+	 * Function updates entity with data from POST
+	 *
+	 * @param OrderEntity $order
+	 * @return OrderEntity $order
+	 */
 	public function updateData($order) {
 		$order->setDeliveryStatus($_POST['delivery']);
 		$order->setPaymentStatus($_POST['payment']);

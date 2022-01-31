@@ -29,6 +29,7 @@ class DisplayProduct extends Controller
 				'img' => $product->getPath(),
 				'price' => number_format($price, 2),
 				'name' => $product->getTitle(),
+				'discount' => $discount ? $product->getPrice() . ' zł' : '',
 				'weight' => $product->getWeight(),
 				'quantity' => $quantity,
 			);

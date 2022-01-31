@@ -9,8 +9,10 @@ class Products {
         var a = document.getElementsByClassName("products-element");
         for (var i = 0; i < a.length; i++) {
             if (localStorageUtil.getProducts().indexOf(a[i].dataset.id) > -1) {
-                a[i].getElementsByTagName("button")[0].classList.add("products-element__btn_active");
-                a[i].getElementsByTagName("button")[0].innerText = "Usuń z koszyka"
+                a[i]
+                    .getElementsByTagName("button")[0]
+                    .classList.add("products-element__btn_active");
+                a[i].getElementsByTagName("button")[0].innerText = "Usuń z koszyka";
             }
         }
     }
@@ -33,7 +35,7 @@ class Products {
         const productsStore = localStorageUtil.getProducts();
         let htmlCatalog = "";
 
-        PRODUCTS.Products.forEach(({ id, name, price, img }) => {
+        PRODUCTS.Products.forEach(({ id, name, discount, weight, price, img }) => {
             let activeClass = "";
             let activeText = "";
             if (productsStore.indexOf(id) === -1) {
@@ -44,9 +46,15 @@ class Products {
             }
 
             htmlCatalog += `
-                <li class="products-element" data-id="${id  }">
+                <li class="products-element" data-id="${id}">
                     <span class="products-element__name">${name}</span>
                     <img class="products-element__img" src="${img}" />
+                    <span class="products-element__weight">
+                         Waga: ${weight}g
+                    </span>
+                    <span style="text-decoration:line-through;" class="products-element__discount">
+                        ${discount}
+                    </span>
                     <span class="products-element__price">
                          ${price.toLocaleString()} zł
                     </span>
@@ -63,11 +71,11 @@ class Products {
             </ul>
         `;
         ROOT_PRODUCTS.innerHTML = html;
-        let products = document.querySelectorAll('.products-element')
-        products.forEach(element => {})
+        let products = document.querySelectorAll(".products-element");
+        products.forEach((element) => {});
     }
 }
 
 const productsPage = new Products();
 productsPage.render();
-productsPage.setActiveProducts()
+productsPage.setActiveProducts();

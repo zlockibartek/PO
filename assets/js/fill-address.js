@@ -13,7 +13,7 @@ const productsPrice = document.querySelector("#productPrice");
 const deliveryPrice = document.querySelector("#deliveryPrice");
 const totalPrice = document.querySelector("#totalPrice");
 const inputs = document.querySelectorAll('input')
-const submit = document.querySelectorAll('input[type=submit]')[1]
+const submit = document.querySelector('form').querySelector('input[type=submit]')
 
 let requiredFields = []
 inputs.forEach(element => {
@@ -23,21 +23,22 @@ inputs.forEach(element => {
 })
 
 submit.addEventListener('click', function() {
-    let message = 'Należy uzupełnić następujące pola: \n'
+    let message = ''
     requiredFields.forEach(element => {
-        if (!requiredFields.value) {
+
+        if (element.value == '') {
             message += element.previousElementSibling.innerText
             if (element.closest('#delivery')) {
                 message += " dostawy"
             }
             if (element.closest('#payment')) {
-                message += " płatności"
+                message += " rozliczenia"
             }
             message += '\n'
         }
     })
     if (message) {
-        alert(message)
+        alert('Należy uzupełnić następujące pola: \n' + message)
     }
 })
 
@@ -143,6 +144,10 @@ function enableInputs(parent) {
 }
 
 checkboxes.forEach((checkbox) => {
+    if (ORDER.userId == '0') {
+        checkbox.closest('.form-row').hidden = true
+        return;
+    }
     checkbox.addEventListener("change", function() {
         let div = this.closest(".form-row").parentElement;
         if (!this.checked) {
