@@ -12,7 +12,7 @@
 	<div class="form-row">
 		<div class="col-md-4 mb-3">
 			<label for="email">Email</label>
-			<input type="text" class="form-control-plaintext" id="email" name="email"  required>
+			<input type="text" class="form-control-plaintext" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" id="email" name="email"  required>
 		</div>
 	</div>
 	<div class="form-row">

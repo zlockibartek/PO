@@ -5,11 +5,11 @@
 	<h4>Dane użytkownika</h4>
 	<div class="form-row">
 		<div class="col-md-4 mb-3">
-			<label for="name">Imię</label>
+			<label for="name">Imię*</label>
 			<input type="text" class="form-control-plaintext" id="name" name="username" placeholder="Imię" required>
 		</div>
 		<div class="col-md-4 mb-3">
-			<label for="surname">Nazwisko</label>
+			<label for="surname">Nazwisko*</label>
 			<input type="text" class="form-control-plaintext" id="surname" name="surname" placeholder="Nazwisko" required>
 		</div>
 		<div class="col-md-4 mb-3">
@@ -33,26 +33,26 @@
 		<div class="form-row">
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="ownPayment" id="ownPayment">
-				<label class="form-check-label" for="ownPayment">Własny</label>
+				<label class="form-check-label" for="ownPayment">Domyślny</label>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="col-md-9 mb-6">
-				<label for="paymentCity">Miasto</label>
+				<label for="paymentCity">Miasto*</label>
 				<input type="text" class="form-control" id="paymentCity" placeholder="Miasto" name="paymentCity" required>
 			</div>
 			<div class="col-md-3 mb-3">
-				<label for="paymentPostal">Kod pocztowy</label>
-				<input type="text" class="form-control" id="paymentPostal" placeholder="Zip" name="paymentPostalCode" required>
+				<label for="paymentPostalCode">Kod pocztowy*</label>
+				<input type="text" class="form-control" id="paymentPostalCode" pattern="\d{2}-\d{3}" placeholder="Zip" name="paymentPostalCode" required>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="col-md-6 mb-6">
-				<label for="paymentStreet">Ulica</label>
+				<label for="paymentStreet">Ulica*</label>
 				<input type="text" class="form-control" id="paymentStreet" placeholder="Ulica" name="paymentStreet" required>
 			</div>
 			<div class="col-md-3 mb-3">
-				<label for="paymentBuilding">Numer budynku</label>
+				<label for="paymentBuilding">Numer budynku*</label>
 				<input type="text" class="form-control" id="paymentBuilding" placeholder="Numer budynku" name="paymentBuilding" required>
 			</div>
 			<div class="col-md-3 mb-3">
@@ -66,27 +66,27 @@
 		<div class="form-row">
 			<div class="form-check">
 				<input type="checkbox" class="form-check-input" name="ownDelivery" id="ownDelivery">
-				<label class="form-check-label" for="ownDelivery">Własny</label>
+				<label class="form-check-label" for="ownDelivery">Domyślny</label>
 			</div>
 		</div>
 		<div class="form-row">
 
 			<div class="col-md-9 mb-6">
-				<label for="deliveryCity">Miasto</label>
+				<label for="deliveryCity">Miasto*</label>
 				<input type="text" class="form-control" id="deliveryCity" placeholder="Miasto" name="deliveryCity" required>
 			</div>
 			<div class="col-md-3 mb-3">
-				<label for="deliveryPostalCode">Kod pocztowy</label>
-				<input type="text" class="form-control" id="deliveryPostalCode" placeholder="Zip" name="deliveryPostalCode" require>
+				<label for="deliveryPostalCode">Kod pocztowy*</label>
+				<input type="text" class="form-control" id="deliveryPostalCode" pattern="\d{2}-\d{3}" placeholder="Zip" name="deliveryPostalCode" require>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="col-md-6 mb-6">
-				<label for="deliveryStreet">Ulica</label>
+				<label for="deliveryStreet">Ulica*</label>
 				<input type="text" class="form-control" id="deliveryStreet" placeholder="Ulica" name="deliveryStreet" required>
 			</div>
 			<div class="col-md-3 mb-3">
-				<label for="deliveryBuilding">Numer budynku</label>
+				<label for="deliveryBuilding">Numer budynku*</label>
 				<input type="text" class="form-control" id="deliveryBuilding" placeholder="Numer budynku" name="deliveryBuilding" required>
 			</div>
 			<div class="col-md-3 mb-3">
@@ -128,7 +128,8 @@
 	<div class="form-row">
 		<div class="col-md-3 mb-3">
 			<label for="deliveryApartment">Numer NIP</label>
-			<input type="text" class="form-control" id="deliveryApartment"  name="nip">
+			<input type="text" class="form-control" pattern="^((\d{3}[- ]\d{3}[- ]\d{2}[- ]\d{2})|(\d{3}[- ]\d{2}[- ]\d{2}[- ]\d{3}))$" id="deliveryApartment"  name="nip">
+			<span>Wymagany format: xxx-xxx-xx-xx lub xxx-xx-xx-xxx</span>
 		</div>
 	</div>
 	<div class="form-row">
@@ -142,5 +143,20 @@
 		</div>
 	</div>
 	<br>
+	<input type="hidden" name="price" value="<?= $price ?>">
+	<input type="hidden" name="weight" value="<?= $weight ?>">
+	<input type="hidden" name="products" value="<?= $products ?>">
+	<div>
+		Koszt produktów: <b id="productPrice"><?= $price ?></b> zł
+	</div>
+	<div>
+		Dostawa: <b id="deliveryPrice"></b> zł
+	</div>
+	<div>
+		Suma: <b id="totalPrice"></b> zł
+	</div>
+	<div>
+		Waga: <b id="totalWeight"><?= $weight ?></b> g
+	</div>
 	<input class="btn btn-primary" type="submit" value="Złóż zamówienie">
 </form>

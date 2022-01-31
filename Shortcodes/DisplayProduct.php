@@ -20,11 +20,16 @@ class DisplayProduct extends Controller
 			$quantity = $product->getQuantity();
 			if ($quantity == 0) 
 				continue;
+			$discount = $product->getDiscount();
+			$price = $product->getPrice();
+			$price = $discount ? $price * ((100 -$discount) / 100) : $price;
+			
 			$results[] = array(
 				'id' => $product->getId(),
 				'img' => $product->getPath(),
-				'price' => $product->getPrice(),
+				'price' => number_format($price, 2),
 				'name' => $product->getTitle(),
+				'discount' => $discount ? $product->getPrice() . ' zł' : '',
 				'weight' => $product->getWeight(),
 				'quantity' => $quantity,
 			);
@@ -38,7 +43,6 @@ class DisplayProduct extends Controller
 		$this->enqueueScript('root');
 		$this->enqueueScript('catalog');
 		$this->enqueueScript('localStorageUtil');
-		// $this->enqueueScript('navbar', null, ['user' => get_current_user_id()], 'NAVBAR');
 		$this->enqueueScript('Products', null, ['Products' => $results], 'PRODUCTS');
 		$this->enqueueScript('Shopping');
 		$this->enqueueScript('Header');

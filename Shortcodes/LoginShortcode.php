@@ -12,9 +12,8 @@ class LoginShortcode
 
 	function handler($atts)
 	{
-		$this->register();
-		$this->renderHTML('Shortcodes/register');
-		return;
+		if (!$this->register())
+			$this->renderHTML('Shortcodes/register');
 	}
 
 	public function register()
@@ -32,13 +31,15 @@ class LoginShortcode
 			if (is_int($error)) {
 				wp_set_password($_POST['password'], $error);
 				$this->renderHTML('message', ['message' => 'Pomyślnie założono konto!', 'status' => 'success']);
+				return true;
 			}
 			else {
 				if (username_exists($_POST['login'])) {
-					$this->renderHTML('message', ['message' => 'Użytkownik z podanym loginem istnieje w bazie!', 'status' => 'error']);
-					return;
+					$this->renderHTML('message', ['message' => 'Użytkownik z podanym loginem istnieje w bazie!', 'status' => 'danger']);
+					return true;
 				}
-				$this->renderHTML('message', ['message' => 'Wystąpił prooblem z utworzeniem konta!', 'status' => 'error']);
+				$this->renderHTML('message', ['message' => 'Wystąpił problem z utworzeniem konta!', 'status' => 'danger']);
+				return true;
 			}
 		}
 	}

@@ -1,8 +1,7 @@
 <?php
 
 namespace src;
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/DBManager.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/po/DBManager/Tables/Product.php');
+require_once('C:\xampp\htdocs\wordpress_multisite\wp-content\plugins\po\DBManager\DBManager.php');
 
 class Controller
 {
@@ -15,7 +14,6 @@ class Controller
 
 	public function __construct()
 	{
-		$this->addRoles();
 	}
 	
 	public function registerShortcodes()
@@ -83,6 +81,7 @@ class Controller
 		$html = ob_get_clean();
 		echo $html;
 	}
+	
 
 	public function enqueueStyle($name, $path = null) {
 		\wp_enqueue_style($name, plugins_url('', __FILE__) . '/assets/css/' . $name .'.css');
@@ -95,7 +94,7 @@ class Controller
 		}
 	}
 
-	private function addRoles() {
+	public function addRoles() {
 		add_role('employee', 'Pracownik', array(
 			'edit_dashboard' => true,
 		));	
@@ -108,7 +107,29 @@ class Controller
 			'edit_dashboard' => true,
 			'read' => true,
 		));	
-		add_role('client', 'Klient', array());	
+		add_role('client', 'Klient', array());
+
+		$role = get_role('manager');
+		
+		$role->add_cap('delete_users');
+		$role->add_cap('create_users');
+		$role->add_cap('edit_users');
+		$role->add_cap('remove_users');
+		$role->add_cap('promote_users');
+		$role->add_cap('edit_dashboard');
+		$role->add_cap('manage_options');
+		$role->add_cap('manage_links');
+		$role->add_cap('edit_posts');
+		$role->add_cap('edit_pages');
+		$role->add_cap('read');
+		$role->add_cap('list_users');
+		$role->add_cap('update_core');
+
+		$role = get_role('employee');
+		$role->add_cap('read');
+		$role->add_cap('manage_options');
+		$role->add_cap('edit_dashboard');
+		
 		
 	}
 	

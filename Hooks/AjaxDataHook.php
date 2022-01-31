@@ -17,10 +17,13 @@ class AjaxDataHook extends Controller
 			$dbManager = new DBManager();
 			$em = $dbManager->entityManager;
 			$product = $em->getRepository('src\DBManager\Tables\Product')->findBy(['id' => $item['id']])[0];
+			$discount = $product->getDiscount();
+			$price = $product->getPrice();
+			$price = $discount ? $price * ((100 -$discount) / 100) : $price;
 			$results[] = array(
 				'id' => $product->getId(),
 				'img' => $product->getPath(),
-				'price' => $product->getPrice(),
+				'price' => number_format($price, 2),
 				'name' => $product->getTitle(),
 				'weight' => $product->getWeight(),
 				'quantity' => $item['count'],

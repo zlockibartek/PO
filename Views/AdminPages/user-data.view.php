@@ -26,7 +26,7 @@
 		</div>
 		<div class="col-md-3 mb-3">
 			<label for="paymentPostal">Kod pocztowy</label>
-			<input type="text" class="form-control" id="paymentPostal" placeholder="Zip" name="paymentPostal" value="<?= $content['paymentAddress'] ? $content['paymentAddress']->getPostalCode() : '' ?>">
+			<input type="text" class="form-control" id="paymentPostal" placeholder="Zip" pattern="\d{2}-\d{3}" name="paymentPostal" value="<?= $content['paymentAddress'] ? $content['paymentAddress']->getPostalCode() : '' ?>">
 		</div>
 	</div>
 	<div class="form-row">
@@ -56,7 +56,7 @@
 		</div>
 		<div class="col-md-3 mb-3">
 			<label for="deliveryPostal">Kod pocztowy</label>
-			<input type="text" class="form-control" id="deliveryPostal" placeholder="Zip" name="deliveryPostal" value="<?= $content['deliveryAddress'] ? $content['deliveryAddress']->getPostalCode() : '' ?>">
+			<input type="text" class="form-control" id="deliveryPostal" placeholder="Zip" pattern="\d{2}-\d{3}" name="deliveryPostal" value="<?= $content['deliveryAddress'] ? $content['deliveryAddress']->getPostalCode() : '' ?>">
 		</div>
 	</div>
 	<div class="form-row">
@@ -83,5 +83,5 @@
 		</div>
 	</div>
 	<input class="btn btn-primary" type="submit" value="Aktualizuj dane"></input>
-	<a href="<?= $backButton ?>"><button type="button" class="btn btn-primary">Powrót</button></a><br><br>
+	<a class="btn btn-primary" href="<?= $backButton ?>">Powrót</a><br><br>
 </form>

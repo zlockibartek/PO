@@ -26,16 +26,23 @@ class UserPanel extends Controller
 				$this->renderHTML('AdminPages/user-password', ['backButton' => '/menu-uzytkownika/']);
 				break;
 			case 'history':
-				$this->renderHTML('AdminPages/user-orders');
-				break;
-			case 'details':
-				$this->renderHTML('AdminPages/order-details');
+				$orders = $this->getOrders($em);
+				wp_enqueue_style('datatable', '//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css');
+				wp_enqueue_script('datatable', '//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js');
+				$this->enqueueScript('product-pagination');
+				$this->renderHTML('AdminPages/user-orders', ['orders' => $orders, 'backButton' => '/menu-uzytkownika/']);
 				break;
 			default:
 				$content = $this->personalData($em);
 				$this->renderHTML('AdminPages/user-panel', ['content' => $content]);
 				break;
 		}
+	}
+
+	public function getOrders($em)
+	{
+		$orders = $em->getRepository('src\DBManager\Tables\OrderEntity')->findBy(['clientId' => get_current_user_id()]);
+		return $orders;
 	}
 
 	public function changePassword()
@@ -45,7 +52,11 @@ class UserPanel extends Controller
 			$user = wp_get_current_user();
 			if ($user && wp_check_password($current, $user->data->user_pass, $user->ID) && $new == $repeat) {
 				wp_set_password($new, $user->ID);
+				$this->renderHTML('message', ['message' => 'Hasło zaktualizowane pomyślnie', 'status' => 'success']);
+				die();
 			}
+			$this->renderHTML('message', ['message' => 'Wprowadzone dane są nieprawidłowe', 'status' => 'danger']);
+			die();
 		}
 	}
 
@@ -69,7 +80,7 @@ class UserPanel extends Controller
 				'last_name' => $_POST['surname'],
 				'phone' => isset($_POST['phone']) ? $_POST['phone'] : '',
 			]);
-			
+
 			extract($_POST);
 
 			if ($paymentCity && $paymentStreet && $paymentBuilding && $paymentPostal) {
@@ -93,12 +104,15 @@ class UserPanel extends Controller
 				$em->flush();
 				update_user_meta($userId, 'delivery_address', $deliveryAddress->getId());
 			}
+			$this->renderHTML('message', ['message' => 'Dane zaktualizowane pomyślnie', 'status' => 'success']);
+			die();
 		}
 		$name = get_user_meta($userId, 'first_name', true);
 		$surname = get_user_meta($userId, 'last_name', true);
 		$email = $user->user_email;
 		$phone = get_user_meta($userId, 'phone', true);
+		$nick = get_user_meta($userId, 'nickname', true);
 
-		return compact('surname', 'email', 'phone', 'deliveryAddress', 'paymentAddress', 'name');
+		return compact('surname', 'email', 'phone', 'deliveryAddress', 'paymentAddress', 'name', 'nick');
 	}
 }

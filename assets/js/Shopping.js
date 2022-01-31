@@ -47,7 +47,7 @@ class Shopping {
                     </div>
                     <div class="col-4 col-sm-4 col-md-4">
                         <div class="quantity">
-                            <input type="number" step="1" max="${quantity}" min="1" value="1" title="Qty" class="qty" size="4" onclick="shoppingPage.updatePriceAndWeight(); ">
+                            <input type="number" step="1" max="${quantity}" min="1" value="1" title="Qty" class="qty" size="4" onchange="shoppingPage.updatePriceAndWeight(); ">
                         </div>
                     </div>
                     <div class="col-2 col-sm-2 col-md-2 text-right">
@@ -68,24 +68,31 @@ class Shopping {
         var sumWeight = 0;
         let quantity = [];
         for (let item of products) {
-            let count = item.querySelector('[title="Qty"]').value;
+            let count = item.querySelector('[title="Qty"]');
+            if (parseInt(count.value) > parseInt(count.max)) {
+                // console.log(count.value)
+                // console.log(count.max)
+                // console.log(count.value > count.max)
+                count.value = count.max
+            }
+            count = count.value
             let price = item.getElementsByClassName("price")[0].innerText
             let w = item.querySelector(".weight").innerText.split(' ')[1]
             let id = item.querySelector('button').dataset.id
-            sumPrice += count * parseFloat(price)
-            sumWeight += count * parseFloat(w)
+            sumPrice += parseInt(count) * parseFloat(price)
+            sumWeight += parseInt(count) * parseInt(w)
             quantity.push({ 'id': id, 'count': count })
         }
         localStorage.setItem('quantity', JSON.stringify(quantity))
-        document.getElementById("totalPrice").innerText = sumPrice
+        document.getElementById("totalPrice").innerText = sumPrice.toFixed(2)
         document.getElementById("totalWeight").innerText = sumWeight
-
     }
+
+
     remove(element, id) {
-        localStorageUtil.putProducts(id)
         document.getElementById("productContainer").innerHTML = this.cartProducts()
         this.updatePriceAndWeight()
-            // console.log(element.closest())   
+        document.querySelector('#button-' + id).click()
     }
 
     render() {
